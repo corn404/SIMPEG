@@ -22,6 +22,8 @@ const GetAbsensi = async (req, res, next) => {
 
     const hadir = await db(tableName.absensi)
       .where({ status: 1 })
+      .andWhere({ masuk: 1 })
+      .andWhere({ pulang: 1 })
       .select(`${tableName.absensi}.id_pegawai`)
       .count(`${tableName.absensi}.id_pegawai`, { as: "hadir" })
       .groupBy(`${tableName.absensi}.id_pegawai`);
