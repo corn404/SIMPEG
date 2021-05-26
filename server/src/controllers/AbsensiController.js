@@ -62,24 +62,57 @@ const CreateAbensi = async (req, res, next) => {
       .orderBy("id", "desc")
       .limit(1);
 
+    if (moment().locale("id").format("HH") <= 6) {
+      return WebResponse(res, 201, "Error", "Absensi akan dibuka pukul 06:00");
+    }
+
     if (checkData.length > 0) {
       if (moment(checkData[0].tgl_absen).format("yyyyMMDD") === tanggal) {
-        return WebResponse(res, 201, "Error", "Anda sudah melakukan absen");
+        if (checkData[0].masuk === 0) {
+          return WebResponse(res, 201, "Error", "Status anda tidak hadir");
+        }
+
+        if (moment().locale("id").format("HH") <= 14) {
+          return WebResponse(
+            res,
+            201,
+            "Error",
+            "Anda sudah melakukan absen silahkan melakukan absen pulang pada pukul 14:00"
+          );
+        } else {
+          const update = await db(tableName.absensi)
+            .update({
+              pulang: 1,
+            })
+            .where({ id: checkData[0].id });
+          return WebResponse(res, 201, "Created", "Success", update);
+        }
       } else {
         const add = await db(tableName.absensi).insert({
           id_pegawai,
+          masuk: 1,
           tgl_absen: moment().format("yyyy-MM-DD HH:mm:ss"),
         });
 
         return WebResponse(res, 201, "Created", "Success", add);
       }
     } else {
-      const add = await db(tableName.absensi).insert({
-        id_pegawai,
-        tgl_absen: moment().format("yyyy-MM-DD HH:mm:ss"),
-      });
+      if (moment().locale("id").format("HH") >= 10) {
+        return WebResponse(
+          res,
+          201,
+          "Error",
+          "Anda sudah tidak bisa melakukan absen, batas melakukan absensi yaitu jam 06:00 sampai jam 10:00"
+        );
+      } else {
+        const add = await db(tableName.absensi).insert({
+          id_pegawai,
+          masuk: 1,
+          tgl_absen: moment().format("yyyy-MM-DD HH:mm:ss"),
+        });
 
-      return WebResponse(res, 201, "Created", "Success", add);
+        return WebResponse(res, 201, "Created", "Success", add);
+      }
     }
   } catch (error) {
     return next(error);

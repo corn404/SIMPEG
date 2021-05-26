@@ -55,7 +55,7 @@ app.use(errorHandler);
 
 server.listen(PORT, () => {
   const job = new CronJob(
-    "* * * * * *",
+    "0 0 10 * * *",
     async () => {
       // pengecekan hari libur pada hari sabtu dan minggu
       if (

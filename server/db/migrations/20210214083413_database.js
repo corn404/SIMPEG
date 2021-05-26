@@ -35,6 +35,8 @@ exports.up = async (knex) => {
     .createTable(tableName.absensi, (table) => {
       table.increments("id").primary().unique().notNullable();
       table.integer("id_pegawai").notNullable();
+      table.integer("masuk").notNullable().defaultTo(0);
+      table.integer("pulang").notNullable().defaultTo(0);
       table.timestamp("tgl_absen").defaultTo(knex.fn.now());
       table
         .integer("status")
