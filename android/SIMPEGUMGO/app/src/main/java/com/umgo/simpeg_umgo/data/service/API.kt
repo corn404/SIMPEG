@@ -7,6 +7,7 @@ import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.model.login.LoginResponse
 import com.umgo.simpeg_umgo.data.model.login.UpdatePasswordRequest
 import com.umgo.simpeg_umgo.data.model.login.UpdatePasswordResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -26,13 +27,16 @@ interface API {
     @POST("absensi/{id_pegawai}")
     fun createAbsen(@Path("id_pegawai") id_pegawai: Int): Call<AbsenResponse>
 
-
     @PUT("pegawai/update")
     fun updatePassword(@Body req: UpdatePasswordRequest): Call<UpdatePasswordResponse>
 
+    @Multipart
+    @POST("upload/sertifikasi/{id}")
+    fun uploadSertifikasi(@Path("id") id:Int, @Part file: MultipartBody.Part): Call<AbsenResponse>
+
     companion object {
-        val BASE_URL = "http://192.168.43.217:5000/api/v1/"
-        val URL_SOCKETS = "http://192.168.43.217:5000"
+        val BASE_URL = "http://192.168.0.112:5000/api/v1/"
+        val URL_SOCKETS = "http://192.168.0.112:5000"
         operator fun invoke(): API {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

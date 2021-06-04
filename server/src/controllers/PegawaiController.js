@@ -5,26 +5,29 @@ const tableName = require("../../db/constant/tableName");
 const WebResponse = require("../utils/WebResponse");
 
 const TambahPegawai = async (req, res, next) => {
-  const { nip, nama, kelamin, pendidikan, jabatan, no_hp } = req.body;
+  const { nidn, nama, kelamin, pendidikan, jenis_pegawai, id_jabatan, no_hp } =
+    req.body;
+  console.log(req.body);
   try {
     const salt = await bcrypt.genSaltSync(12);
-    const passwordHash = await bcrypt.hashSync(nip, salt);
-    const checkNip = await db(tableName.pegawai).where({ nip });
-    if (checkNip.length > 0) {
-      return WebResponse(res, 201, "Error", "NIP sudah terdaftar");
+    const passwordHash = await bcrypt.hashSync(nidn, salt);
+    const checkNidn = await db(tableName.pegawai).where({ nidn });
+    if (checkNidn.length > 0) {
+      return WebResponse(res, 201, "Error", "NIDN/NIY sudah terdaftar");
     }
     const add = await db(tableName.pegawai).insert({
-      nip,
+      nidn,
       nama,
       kelamin,
       pendidikan,
-      jabatan,
+      id_jabatan,
+      jenis_pegawai,
       no_hp,
     });
 
     if (add) {
       const createUser = await db(tableName.users).insert({
-        username: nip,
+        username: nidn,
         password: passwordHash,
         role: "user",
         id_pegawai: add[0],
@@ -41,7 +44,25 @@ const TambahPegawai = async (req, res, next) => {
 
 const GetPegawai = async (req, res, next) => {
   try {
-    const data = await db(tableName.pegawai).select("*");
+    const data = await db(tableName.pegawai)
+      .select(
+        `${tableName.pegawai}.id`,
+        `${tableName.pegawai}.nidn`,
+        `${tableName.pegawai}.nama`,
+        `${tableName.pegawai}.kelamin`,
+        `${tableName.pegawai}.pendidikan`,
+        `${tableName.pegawai}.no_hp`,
+        `${tableName.pegawai}.status`,
+        `${tableName.pegawai}.jenis_pegawai`,
+        `${tableName.pegawai}.id_jabatan`,
+        `${tableName.pegawai}.sertifikasi`,
+        `${tableName.jabatan}.jabatan`
+      )
+      .join(
+        tableName.jabatan,
+        `${tableName.pegawai}.id_jabatan`,
+        `${tableName.jabatan}.id`
+      );
     return WebResponse(res, 200, "Success", data);
   } catch (error) {
     return next(error);
@@ -50,13 +71,17 @@ const GetPegawai = async (req, res, next) => {
 
 const PegawaiLogin = async (req, res, next) => {
   const { username, password } = req.body;
+  console.log(req.body);
   try {
     const checkUser = await db(tableName.users).where({ username });
+    console.log(checkUser);
     if (checkUser.length > 0) {
       const checkPass = await bcrypt.compareSync(
         password,
         checkUser[0].password
       );
+
+      console.log(checkPass);
       if (checkPass) {
         const getPegawai = await db(tableName.users)
           .select(
@@ -64,11 +89,12 @@ const PegawaiLogin = async (req, res, next) => {
             `${tableName.users}.role`,
             `${tableName.users}.status`,
             `${tableName.users}.id_pegawai`,
-            `${tableName.pegawai}.nip`,
+            `${tableName.pegawai}.nidn`,
             `${tableName.pegawai}.nama`,
             `${tableName.pegawai}.kelamin`,
             `${tableName.pegawai}.pendidikan`,
-            `${tableName.pegawai}.jabatan`,
+            `${tableName.pegawai}.jenis_pegawai`,
+            `${tableName.pegawai}.id_jabatan`,
             `${tableName.pegawai}.no_hp`
           )
           .join(
@@ -77,6 +103,7 @@ const PegawaiLogin = async (req, res, next) => {
             `${tableName.pegawai}.id`
           )
           .where({ id_pegawai: checkUser[0].id_pegawai });
+        console.log(getPegawai);
 
         // const data = { ...getPegawai[0] };
 
@@ -118,10 +145,11 @@ const DeletePegawai = async (req, res, next) => {
 };
 
 const ResetPassword = async (req, res, next) => {
-  const { id, nip } = req.body;
+  const { id, nidn } = req.body;
+
   try {
     const salt = await bcrypt.genSaltSync(12);
-    const password = await bcrypt.hashSync(nip, salt);
+    const password = await bcrypt.hashSync(nidn, salt);
     const reset = await db(tableName.users)
       .update({ password })
       .where({ role: "user" })
@@ -135,14 +163,16 @@ const ResetPassword = async (req, res, next) => {
 };
 
 const UpdatePegawai = async (req, res, next) => {
-  const { id, nama, kelamin, pendidikan, jabatan, no_hp } = req.body;
+  const { id, nama, kelamin, pendidikan, jenis_pegawai, id_jabatan, no_hp } =
+    req.body;
   try {
     const update = await db(tableName.pegawai)
       .update({
         nama,
         kelamin,
         pendidikan,
-        jabatan,
+        jenis_pegawai,
+        id_jabatan,
         no_hp,
       })
       .where({ id });

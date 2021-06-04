@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         header.findViewById<TextView>(R.id.nama_pegawai).text = sharedUsers.nama
-        header.findViewById<TextView>(R.id.nomor_hp).text = "NIP : ${sharedUsers.nip}"
+        header.findViewById<TextView>(R.id.nomor_hp).text = "NIDN/NIY : ${sharedUsers.nip}"
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

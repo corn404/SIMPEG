@@ -66,7 +66,7 @@ class Login : AppCompatActivity() {
                     if (!it.isNullOrEmpty()) {
                         jwt = JWT(it)
                             val id_pegawai = jwt.getClaim("id_pegawai").asString()
-                        val nip = jwt.getClaim("nip").asString()
+                        val nip = jwt.getClaim("nidn").asString()
                         val nama = jwt.getClaim("nama").asString()
                         val kelamin = jwt.getClaim("kelamin").asString()
                         val pendidikan = jwt.getClaim("pendidikan").asString()

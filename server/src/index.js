@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const consola = require("consola");
 const moment = require("moment");
-const fileupload = require("express-fileupload");
+// const fileupload = require("express-fileupload");
 const multer = require("multer");
 const volleyball = require("volleyball");
 const CronJob = require("cron").CronJob;
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 // app.use(morgan("dev"));
 app.use(volleyball);
-app.use(fileupload());
+// app.use(fileupload());
 
 io.on("connection", (socket) => {
   consola.success("Client Connection", socket.id);

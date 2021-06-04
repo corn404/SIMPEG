@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CCard,
   CCardHeader,
@@ -9,19 +9,23 @@ import {
   CDataTable,
   CBadge,
 } from "@coreui/react";
-import { IoPrint } from "react-icons/io5";
+import { IoEye } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { getAbsensi } from "src/redux/actions/absensi";
+import ModalInfo from "./ModalInfo";
 
 const Absensi = () => {
   const dispatch = useDispatch();
   const dataAbsen = useSelector((x) => x.absensi.data);
+  const [modal, setModal] = useState(false);
+  const [item, setItem] = useState(null);
+  const [bulan, setBulan] = useState("");
 
   const columns = [
     { key: "no", label: "NO", _style: { width: "50px", textAlign: "center" } },
     {
-      key: "nip",
-      label: "NIP",
+      key: "nidn",
+      label: "NIDN/NIY",
       _style: { width: "70px" },
     },
     {
@@ -91,6 +95,66 @@ const Absensi = () => {
     },
   ];
 
+  const handleOpenModal = async (bulan, item) => {
+    await setBulan(bulan);
+    await setItem(item);
+    await setModal(true);
+  };
+
+  const handleBulanClick = (nama, item) => {
+    switch (nama) {
+      case "januari": {
+        return handleOpenModal("01", item);
+      }
+
+      case "februari": {
+        return handleOpenModal("02", item);
+      }
+
+      case "maret": {
+        return handleOpenModal("03", item);
+      }
+
+      case "april": {
+        return handleOpenModal("04", item);
+      }
+
+      case "mei": {
+        return handleOpenModal("05", item);
+      }
+
+      case "juni": {
+        return handleOpenModal("06", item);
+      }
+
+      case "juli": {
+        return handleOpenModal("07", item);
+      }
+
+      case "agustus": {
+        return handleOpenModal("08", item);
+      }
+
+      case "september": {
+        return handleOpenModal("09", item);
+      }
+
+      case "oktober": {
+        return handleOpenModal("10", item);
+      }
+
+      case "november": {
+        return handleOpenModal("11", item);
+      }
+      case "desember": {
+        return handleOpenModal("12", item);
+      }
+
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     dispatch(getAbsensi());
   }, []);
@@ -119,85 +183,133 @@ const Absensi = () => {
               no: (item, i) => <td style={{ textAlign: "center" }}>{i + 1}</td>,
               januari: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("januari", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               februari: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("februari", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               maret: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("maret", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               april: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("april", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               mei: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("mei", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               juni: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("juni", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               juli: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("juli", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               agustus: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("agustus", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               september: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("september", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               oktober: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("oktober", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               november: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("november", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
               desember: (item) => (
                 <td style={{ textAlign: "center" }}>
-                  <CButton color="info" size="sm">
-                    <IoPrint />
+                  <CButton
+                    color="info"
+                    size="sm"
+                    onClick={() => handleBulanClick("desember", item)}
+                  >
+                    <IoEye />
                   </CButton>
                 </td>
               ),
@@ -205,6 +317,14 @@ const Absensi = () => {
           />
         </CCardBody>
       </CCard>
+      {item && (
+        <ModalInfo
+          modal={modal}
+          setModal={setModal}
+          item={item}
+          bulan={bulan}
+        />
+      )}
     </>
   );
 };

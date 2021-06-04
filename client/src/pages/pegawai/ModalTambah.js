@@ -13,8 +13,9 @@ import {
   CRow,
   CSelect,
 } from "@coreui/react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getJabatan } from "src/redux/actions/jabatan";
 import { tambahPegawai } from "src/redux/actions/pegawai";
 import { errors } from "src/utils";
 
@@ -25,12 +26,17 @@ const ModalTambah = ({ modal, setModal }) => {
   const [kelamin, setKelamin] = useState("");
   const [pendidikan, setPendidikan] = useState("");
   const [nohp, setNohp] = useState("");
+  const [jabatan, setJabatan] = useState(0);
+  const [pegawai, setPegawai] = useState(0);
+  const dataJabatan = useSelector((x) => x.jabatan.data);
 
   const kosong = () => {
     setNip("");
     setNama("");
     setKelamin("");
     setPendidikan("");
+    setPegawai(0);
+    setJabatan(0);
     setNohp("");
   };
 
@@ -39,19 +45,25 @@ const ModalTambah = ({ modal, setModal }) => {
     nama === "" && errors("Nama masih kosong");
     kelamin === "" && errors("Kelamin belum dipilih");
     pendidikan === "" && errors("pendidikan belum dipilih");
+    pegawai === 0 && errors("jenis pegawai belum dipilih");
+    jabatan === 0 && errors("jabatan belum dipilih");
     nohp === "" && errors("Nomor hp masih kosong");
     if (
       nama !== "" &&
       nama !== "" &&
       kelamin !== "" &&
       pendidikan !== "" &&
+      pegawai !== 0 &&
+      jabatan !== 0 &&
       nohp !== ""
     ) {
       const data = {
-        nip,
+        nidn: nip,
         nama,
         kelamin,
         pendidikan,
+        id_jabatan: jabatan,
+        jenis_pegawai: pegawai,
         no_hp: nohp,
       };
       dispatch(tambahPegawai(data));
@@ -59,6 +71,10 @@ const ModalTambah = ({ modal, setModal }) => {
       kosong();
     }
   };
+
+  useEffect(() => {
+    dispatch(getJabatan());
+  }, []);
 
   return (
     <CModal show={modal} onClose={setModal}>
@@ -69,10 +85,10 @@ const ModalTambah = ({ modal, setModal }) => {
         <CRow>
           <CCol xs="12">
             <CFormGroup>
-              <CLabel htmlFor="nip">NIP</CLabel>
+              <CLabel htmlFor="nip">NIDN/NIY</CLabel>
               <CInput
                 id="nip"
-                placeholder="Masukan Masukan NIP"
+                placeholder="Masukan Masukan NIDN/NIY"
                 value={nip}
                 onChange={(e) => setNip(e.target.value)}
               />
@@ -125,13 +141,48 @@ const ModalTambah = ({ modal, setModal }) => {
           <CCol xs="12">
             <CFormGroup>
               <CLabel>Pendidikan</CLabel>
-              <CSelect onChange={(e) => setPendidikan(e.target.value)}>
+              <CSelect
+                onChange={(e) => setPendidikan(e.target.value)}
+                value={pendidikan}
+              >
                 <option value="">-- pilih --</option>
                 <option value="SMA">SMA</option>
                 <option value="D3">D3</option>
                 <option value="S1">S1</option>
                 <option value="S2">S2</option>
                 <option value="S3">S3</option>
+              </CSelect>
+            </CFormGroup>
+          </CCol>
+        </CRow>
+
+        <CRow>
+          <CCol xs="12">
+            <CFormGroup>
+              <CLabel>Jenis Pegawai</CLabel>
+              <CSelect
+                onChange={(e) => setPegawai(e.target.value)}
+                value={pegawai}
+              >
+                <option value="">-- pilih --</option>
+                <option value="1">Pegawai Biasa</option>
+                <option value="2">Dosen</option>
+              </CSelect>
+            </CFormGroup>
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol xs="12">
+            <CFormGroup>
+              <CLabel>Jabatan</CLabel>
+              <CSelect
+                value={jabatan}
+                onChange={(e) => setJabatan(e.target.value)}
+              >
+                <option value="0">-- pilih --</option>
+                {dataJabatan.map((x) => (
+                  <option value={x.id}>{x.jabatan}</option>
+                ))}
               </CSelect>
             </CFormGroup>
           </CCol>

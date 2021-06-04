@@ -4,6 +4,7 @@ import changeState from "./sidebar";
 import Pegawai from "./pegawai";
 import Users from "./users";
 import Absensi from "./absensi";
+import Jabatan from "./jabatan";
 
 export default combineReducers({
   app: App,
@@ -11,4 +12,5 @@ export default combineReducers({
   pegawai: Pegawai,
   users: Users,
   absensi: Absensi,
+  jabatan: Jabatan,
 });

@@ -15,9 +15,10 @@ import {
   getPegawai,
   resetPassword,
 } from "src/redux/actions/pegawai";
-import { IoEye, IoReload, IoTrashOutline } from "react-icons/io5";
+import { IoEye, IoFolder, IoReload, IoTrashOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import ModalUpdate from "./ModalUpdate";
+import { BASE_URL, SOCKET_URL } from "src/redux/actions";
 
 const Pegawai = () => {
   const dispatch = useDispatch();
@@ -27,15 +28,16 @@ const Pegawai = () => {
   const dataPegawai = useSelector((x) => x.pegawai.data);
 
   const columns = [
-    { key: "nip", label: "NIP" },
+    { key: "nidn", label: "NIDN/NIY" },
     { key: "nama", label: "NAMA PEGAWAI" },
     { key: "kelamin", label: "KELAMIN" },
     { key: "pendidikan", label: "PENDIDIKAN" },
+    { key: "jabatan", label: "JABATAN" },
     { key: "no_hp", label: "NO HP" },
     {
       key: "aksi",
       label: "AKSI",
-      _style: { width: "150px", textAlign: "center" },
+      _style: { width: "200px", textAlign: "center" },
     },
   ];
 
@@ -64,7 +66,7 @@ const Pegawai = () => {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(resetPassword(item.id, item.nip));
+        dispatch(resetPassword(item.id, item.nidn));
       }
     });
   };
@@ -105,6 +107,7 @@ const Pegawai = () => {
             itemsPerPageSelect
             itemsPerPage={5}
             hover
+            tableFilter
             pagination
             scopedSlots={{
               no_hp: (item) => (
@@ -120,6 +123,26 @@ const Pegawai = () => {
                   >
                     <IoReload />
                   </CButton>
+                  {item.sertifikasi !== null && (
+                    <>
+                      {item.jenis_pegawai === 2 && (
+                        <CButton
+                          size="sm"
+                          color="success"
+                          style={{ marginRight: 10 }}
+                          onClick={() =>
+                            window.open(
+                              `${SOCKET_URL}/uploads/${item.sertifikasi}`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          <IoFolder />
+                        </CButton>
+                      )}
+                    </>
+                  )}
+
                   <CButton
                     size="sm"
                     color="info"

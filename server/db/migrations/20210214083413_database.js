@@ -9,12 +9,17 @@ exports.up = async (knex) => {
   await knex.schema
     .createTable(tableName.pegawai, (table) => {
       table.increments("id").notNullable().primary();
-      table.string("nip", 100).nullable();
+      table.string("nidn", 100).nullable();
       table.string("nama", 150).notNullable();
       table.enum("kelamin", ["L", "P"]).notNullable();
       table.string("pendidikan", 100).nullable();
-      table.string("jabatan", 150).nullable();
+      table
+        .integer("jenis_pegawai")
+        .notNullable()
+        .comment("1=pegaiwai biasa, 2=dosen");
+      table.integer("id_jabatan").notNullable();
       table.string("no_hp", 20).nullable();
+      table.text("sertifikasi").nullable();
       table.integer("status").defaultTo(1).unsigned().notNullable();
     })
     .createTable(tableName.users, (table) => {
@@ -43,6 +48,10 @@ exports.up = async (knex) => {
         .defaultTo(1)
         .notNullable()
         .comment("1=hadir, 2=tidak hadir, 3=libur");
+    })
+    .createTable(tableName.jabatan, (table) => {
+      table.increments("id").primary().unique().notNullable();
+      table.string("jabatan").notNullable();
     });
 };
 
@@ -55,5 +64,6 @@ exports.down = async (knex) => {
   await knex.schema
     .dropTable(tableName.users)
     .dropTable(tableName.pegawai)
+    .dropTable(tableName.jabatan)
     .dropTable(tableName.absensi);
 };

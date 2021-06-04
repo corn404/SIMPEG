@@ -14,7 +14,8 @@ import {
   CSelect,
 } from "@coreui/react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getJabatan } from "src/redux/actions/jabatan";
 import { tambahPegawai, updatePegawai } from "src/redux/actions/pegawai";
 import { errors } from "src/utils";
 
@@ -26,6 +27,9 @@ const ModalUpdate = ({ modal, setModal, item }) => {
   const [kelamin, setKelamin] = useState("");
   const [pendidikan, setPendidikan] = useState("");
   const [nohp, setNohp] = useState("");
+  const [jabatan, setJabatan] = useState(0);
+  const [pegawai, setPegawai] = useState(0);
+  const dataJabatan = useSelector((x) => x.jabatan.data);
 
   const kosong = () => {
     setNip("");
@@ -40,12 +44,16 @@ const ModalUpdate = ({ modal, setModal, item }) => {
     nama === "" && errors("Nama masih kosong");
     kelamin === "" && errors("Kelamin belum dipilih");
     pendidikan === "" && errors("pendidikan belum dipilih");
+    pegawai === 0 && errors("jenis pegawai belum dipilih");
+    jabatan === 0 && errors("jabatan belum dipilih");
     nohp === "" && errors("Nomor hp masih kosong");
     if (
       nama !== "" &&
       nama !== "" &&
       kelamin !== "" &&
       pendidikan !== "" &&
+      pegawai !== 0 &&
+      jabatan !== 0 &&
       nohp !== ""
     ) {
       const data = {
@@ -53,6 +61,8 @@ const ModalUpdate = ({ modal, setModal, item }) => {
         nama,
         kelamin,
         pendidikan,
+        jenis_pegawai: pegawai,
+        id_jabatan: jabatan,
         no_hp: nohp,
       };
       dispatch(updatePegawai(data));
@@ -63,11 +73,14 @@ const ModalUpdate = ({ modal, setModal, item }) => {
 
   useEffect(() => {
     setId(item.id);
-    setNip(item.nip);
+    setNip(item.nidn);
     setNama(item.nama);
     setKelamin(item.kelamin);
     setNohp(item.no_hp);
     setPendidikan(item.pendidikan);
+    setPegawai(item.jenis_pegawai);
+    setJabatan(item.id_jabatan);
+    dispatch(getJabatan());
   }, [item]);
 
   return (
@@ -79,7 +92,7 @@ const ModalUpdate = ({ modal, setModal, item }) => {
         <CRow>
           <CCol xs="12">
             <CFormGroup>
-              <CLabel htmlFor="nip">NIP</CLabel>
+              <CLabel htmlFor="nip">NIDN/NIY</CLabel>
               <CInput
                 id="nip"
                 placeholder="Masukan Masukan NIP"
@@ -148,6 +161,37 @@ const ModalUpdate = ({ modal, setModal, item }) => {
                 <option value="S1">S1</option>
                 <option value="S2">S2</option>
                 <option value="S3">S3</option>
+              </CSelect>
+            </CFormGroup>
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol xs="12">
+            <CFormGroup>
+              <CLabel>Jenis Pegawai</CLabel>
+              <CSelect
+                onChange={(e) => setPegawai(e.target.value)}
+                value={pegawai}
+              >
+                <option value="">-- pilih --</option>
+                <option value="1">Pegawai Biasa</option>
+                <option value="2">Dosen</option>
+              </CSelect>
+            </CFormGroup>
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol xs="12">
+            <CFormGroup>
+              <CLabel>Jabatan</CLabel>
+              <CSelect
+                value={jabatan}
+                onChange={(e) => setJabatan(e.target.value)}
+              >
+                <option value="0">-- pilih --</option>
+                {dataJabatan.map((x) => (
+                  <option value={x.id}>{x.jabatan}</option>
+                ))}
               </CSelect>
             </CFormGroup>
           </CCol>

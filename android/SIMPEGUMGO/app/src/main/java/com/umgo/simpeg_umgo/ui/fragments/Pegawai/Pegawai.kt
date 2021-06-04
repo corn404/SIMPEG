@@ -25,7 +25,7 @@ class Pegawai : Fragment() {
 
 
         binding?.textNama?.text = sharedUsers.nama
-        binding?.textNip?.text = "NIP : ${sharedUsers.nip}"
+        binding?.textNip?.text = "NIDN/NIY : ${sharedUsers.nip}"
         binding?.textJenisKelamin?.text = if(sharedUsers.kelamin == "L")  "Jenis Kelamin : Laki - Laki" else "Jenis Kelamin : Perempuan"
         binding?.textPendidikan?.text = "Pendidikan : ${sharedUsers.pendidikan}"
 

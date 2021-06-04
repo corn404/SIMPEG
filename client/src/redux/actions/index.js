@@ -10,3 +10,6 @@ export const GET_ABSENSI = "GET_ABSENSI";
 
 // pegawai
 export const GET_PEGAWAI = "GET_PEGAWAI";
+
+// jabatan
+export const GET_JABATAN = "GET_JABATAN";

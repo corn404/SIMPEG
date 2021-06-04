@@ -43,7 +43,10 @@ export const deletePegawai = (id) => async (dispatch) => {
 
 export const resetPassword = (id, nip) => async (dispatch) => {
   try {
-    const reset = await axios.put(`${BASE_URL}/pegawai/reset`, { id, nip });
+    const reset = await axios.put(`${BASE_URL}/pegawai/reset`, {
+      id,
+      nidn: nip,
+    });
     if (reset.data.status === "Updated") {
       Swal.fire("Reset Password!", "Password berhasil direset.!", "success");
       dispatch(getPegawai());

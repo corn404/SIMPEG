@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment2_to_setting"
             app:destination="@id/setting" />
+        <action
+            android:id="@+id/action_homeFragment2_to_berkas2"
+            app:destination="@id/berkas2" />
     </fragment>
     <fragment
         android:id="@+id/profilFragment2"
@@ -69,6 +72,15 @@
         tools:layout="@layout/fragment_setting" >
         <action
             android:id="@+id/action_setting_to_homeFragment2"
+            app:destination="@id/homeFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/berkas2"
+        android:name="com.umgo.simpeg_umgo.ui.fragments.Berkas.Berkas"
+        android:label="Upload Berkas"
+        tools:layout="@layout/fragment_berkas" >
+        <action
+            android:id="@+id/action_berkas2_to_homeFragment2"
             app:destination="@id/homeFragment2" />
     </fragment>
 </navigation>

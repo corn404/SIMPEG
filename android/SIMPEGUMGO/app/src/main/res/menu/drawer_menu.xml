@@ -7,14 +7,22 @@
         <item
             android:icon="@drawable/ic_home"
             android:id="@+id/homeFragment2"
-            android:title="Home" />
+            android:title="Home"
+            tools:ignore="HardcodedText" />
         <item
             android:icon="@drawable/ic_settings"
             android:id="@+id/setting"
-            android:title="Update Password" />
+            android:title="Update Password"
+            tools:ignore="HardcodedText" />
+        <item
+            android:icon="@drawable/ic_berkas"
+            android:id="@+id/berkas2"
+            android:title="Upload Berkas"
+            tools:ignore="HardcodedText" />
         <item
             android:icon="@drawable/ic_logout__1_"
             android:id="@+id/keluar"
-            android:title="Keluar" />
+            android:title="Keluar"
+            tools:ignore="HardcodedText" />
     </group>
 </menu>

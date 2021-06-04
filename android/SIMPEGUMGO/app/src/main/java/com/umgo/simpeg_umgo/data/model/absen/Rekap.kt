@@ -5,7 +5,7 @@ data class Rekap(
     val tgl_absen: String,
     val id_pegawai: String,
     val status: Int,
-    val nip: String,
+    val nidn: String,
     val nama: String,
     val kelamin: String,
     val pendidikan: String,
