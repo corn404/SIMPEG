@@ -7,5 +7,10 @@ route.post(
   uploadFile.single("sertifikasi"),
   UploadController.UploadSetifikasi
 );
+route.post(
+  "/riwayat/:id",
+  uploadFile.single("sertifikasi"),
+  UploadController.UploadRiwayatHidup
+);
 
 module.exports = route;

@@ -19,11 +19,13 @@ import { IoEye, IoFolder, IoReload, IoTrashOutline } from "react-icons/io5";
 import Swal from "sweetalert2";
 import ModalUpdate from "./ModalUpdate";
 import { BASE_URL, SOCKET_URL } from "src/redux/actions";
+import ModalBerkas from "./ModalBerkas";
 
 const Pegawai = () => {
   const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [modalUpdate, setModalUpdate] = useState(false);
+  const [modalBerkas, setModalBerkas] = useState(false);
   const [item, setItem] = useState(null);
   const dataPegawai = useSelector((x) => x.pegawai.data);
 
@@ -76,6 +78,11 @@ const Pegawai = () => {
     await setModalUpdate(true);
   };
 
+  const handleModalBerkas = async (item) => {
+    await setItem(item);
+    await setModalBerkas(true);
+  };
+
   useEffect(() => {
     dispatch(getPegawai());
   }, []);
@@ -123,25 +130,14 @@ const Pegawai = () => {
                   >
                     <IoReload />
                   </CButton>
-                  {item.sertifikasi !== null && (
-                    <>
-                      {item.jenis_pegawai === 2 && (
-                        <CButton
-                          size="sm"
-                          color="success"
-                          style={{ marginRight: 10 }}
-                          onClick={() =>
-                            window.open(
-                              `${SOCKET_URL}/uploads/${item.sertifikasi}`,
-                              "_blank"
-                            )
-                          }
-                        >
-                          <IoFolder />
-                        </CButton>
-                      )}
-                    </>
-                  )}
+                  <CButton
+                    size="sm"
+                    color="success"
+                    style={{ marginRight: 10 }}
+                    onClick={() => handleModalBerkas(item)}
+                  >
+                    <IoFolder />
+                  </CButton>
 
                   <CButton
                     size="sm"
@@ -166,11 +162,19 @@ const Pegawai = () => {
       </CCard>
       <ModalTambah modal={modal} setModal={setModal} />
       {item && (
-        <ModalUpdate
-          modal={modalUpdate}
-          setModal={setModalUpdate}
-          item={item}
-        />
+        <>
+          <ModalUpdate
+            modal={modalUpdate}
+            setModal={setModalUpdate}
+            item={item}
+          />
+
+          <ModalBerkas
+            modal={modalBerkas}
+            setModal={setModalBerkas}
+            item={item}
+          />
+        </>
       )}
     </>
   );

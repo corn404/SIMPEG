@@ -5,8 +5,17 @@ const tableName = require("../../db/constant/tableName");
 const WebResponse = require("../utils/WebResponse");
 
 const TambahPegawai = async (req, res, next) => {
-  const { nidn, nama, kelamin, pendidikan, jenis_pegawai, id_jabatan, no_hp } =
-    req.body;
+  const {
+    nidn,
+    nama,
+    tempat_lahir,
+    tgl_lahir,
+    kelamin,
+    pendidikan,
+    jenis_pegawai,
+    id_jabatan,
+    no_hp,
+  } = req.body;
   console.log(req.body);
   try {
     const salt = await bcrypt.genSaltSync(12);
@@ -18,6 +27,8 @@ const TambahPegawai = async (req, res, next) => {
     const add = await db(tableName.pegawai).insert({
       nidn,
       nama,
+      tempat_lahir,
+      tgl_lahir,
       kelamin,
       pendidikan,
       id_jabatan,
@@ -49,6 +60,8 @@ const GetPegawai = async (req, res, next) => {
         `${tableName.pegawai}.id`,
         `${tableName.pegawai}.nidn`,
         `${tableName.pegawai}.nama`,
+        `${tableName.pegawai}.tempat_lahir`,
+        `${tableName.pegawai}.tgl_lahir`,
         `${tableName.pegawai}.kelamin`,
         `${tableName.pegawai}.pendidikan`,
         `${tableName.pegawai}.no_hp`,
@@ -56,6 +69,7 @@ const GetPegawai = async (req, res, next) => {
         `${tableName.pegawai}.jenis_pegawai`,
         `${tableName.pegawai}.id_jabatan`,
         `${tableName.pegawai}.sertifikasi`,
+        `${tableName.pegawai}.riwayat_hidup`,
         `${tableName.jabatan}.jabatan`
       )
       .join(
@@ -91,10 +105,14 @@ const PegawaiLogin = async (req, res, next) => {
             `${tableName.users}.id_pegawai`,
             `${tableName.pegawai}.nidn`,
             `${tableName.pegawai}.nama`,
+            `${tableName.pegawai}.tempat_lahir`,
+            `${tableName.pegawai}.tgl_lahir`,
             `${tableName.pegawai}.kelamin`,
             `${tableName.pegawai}.pendidikan`,
             `${tableName.pegawai}.jenis_pegawai`,
             `${tableName.pegawai}.id_jabatan`,
+            `${tableName.pegawai}.sertifikasi`,
+            `${tableName.pegawai}.riwayat_hidup`,
             `${tableName.pegawai}.no_hp`
           )
           .join(
@@ -163,12 +181,23 @@ const ResetPassword = async (req, res, next) => {
 };
 
 const UpdatePegawai = async (req, res, next) => {
-  const { id, nama, kelamin, pendidikan, jenis_pegawai, id_jabatan, no_hp } =
-    req.body;
+  const {
+    id,
+    nama,
+    kelamin,
+    tempat_lahir,
+    tgl_lahir,
+    pendidikan,
+    jenis_pegawai,
+    id_jabatan,
+    no_hp,
+  } = req.body;
   try {
     const update = await db(tableName.pegawai)
       .update({
         nama,
+        tempat_lahir,
+        tgl_lahir,
         kelamin,
         pendidikan,
         jenis_pegawai,
