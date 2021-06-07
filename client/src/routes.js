@@ -12,7 +12,7 @@ const Akun = React.lazy(() => import("./pages/akun/index"));
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/admin", name: "Admin", component: Colors, exact: true },
-  { path: "/admin/absensi", name: "Absensi", component: Absensi },
+  { path: "/admin/rekap-absensi", name: "Rekap Absensi", component: Absensi },
   { path: "/admin/pegawai", name: "Pegawai", component: Pegawai },
   { path: "/admin/jabatan", name: "Jabatan", component: Jabatan },
   { path: "/setting", name: "Setting", component: Cards, exact: true },

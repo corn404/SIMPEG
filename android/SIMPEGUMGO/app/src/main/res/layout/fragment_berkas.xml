@@ -13,25 +13,62 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:text="Silahkan Upload berkas sertifikasi anda dalam bentuk file PDF"
+        android:text="Silahkan Upload berkas anda dalam bentuk file PDF"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:ignore="MissingConstraints">
+
+        <EditText
+            android:id="@+id/et_riwayat_hidup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_input"
+            android:hint="Berkas riwayat hidup ..."
+            android:padding="16dp"
+            android:textSize="12sp"
+            android:enabled="false"
+            tools:ignore="HardcodedText" />
+
+        <ImageView
+
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_pdf"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/et_riwayat_hidup"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="MissingConstraints">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_input_left"
                     android:enabled="false"
-                    android:maxLines="1"
                     android:hint="Pilih file berkas anda"
+                    android:maxLines="1"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
 

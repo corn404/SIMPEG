@@ -3,7 +3,6 @@ const multer = require("multer");
 
 const storageFile = multer.diskStorage({
   destination: function (req, file, done) {
-    console.log(__dirname);
     done(null, "src/public/uploads/");
   },
 

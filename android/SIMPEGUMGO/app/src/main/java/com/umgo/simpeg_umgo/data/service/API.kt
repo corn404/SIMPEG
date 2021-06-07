@@ -34,6 +34,16 @@ interface API {
     @POST("upload/sertifikasi/{id}")
     fun uploadSertifikasi(@Path("id") id:Int, @Part file: MultipartBody.Part): Call<AbsenResponse>
 
+    @Multipart
+    @POST("upload/riwayat/{id}")
+    fun uploadRiwayat(@Path("id") id:Int, @Part file: MultipartBody.Part): Call<AbsenResponse>
+
+    @DELETE("upload/sertifikasi/{id}")
+    fun deleteSertifikasi(@Path("id") id:Int): Call<AbsenResponse>
+
+    @DELETE("upload/riwayat/{id}")
+    fun deleteRiwayat(@Path("id") id:Int): Call<AbsenResponse>
+
     companion object {
         val BASE_URL = "http://192.168.0.112:5000/api/v1/"
         val URL_SOCKETS = "http://192.168.0.112:5000"

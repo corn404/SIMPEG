@@ -73,6 +73,8 @@ class Login : AppCompatActivity() {
                         val jabatan = jwt.getClaim("jabatan").asString()
                         val no_hp = jwt.getClaim("no_hp").asString()
                         val role = jwt.getClaim("role").asString()
+                        val sertifikasi = jwt.getClaim("sertifikasi").asString()
+                        val riwayat_hidup = jwt.getClaim("riwayat_hidup").asString()
                         login(
                             id_pegawai.toString(),
                             nip.toString(),
@@ -81,7 +83,9 @@ class Login : AppCompatActivity() {
                             pendidikan.toString(),
                             jabatan.toString(),
                             no_hp.toString(),
-                            role.toString()
+                            role.toString(),
+                            riwayat_hidup.toString(),
+                            sertifikasi.toString()
                         )
                     }
                 })
@@ -108,7 +112,9 @@ class Login : AppCompatActivity() {
         pendidikan: String,
         jabatan: String?,
         no_hp: String,
-        role: String
+        role: String,
+        file_riwayat:String,
+        file_verifikasi: String
     ) {
         sharedUsers.let {
             it.id_pegawai = id_pegawai
@@ -120,6 +126,8 @@ class Login : AppCompatActivity() {
             it.no_hp = no_hp
             it.role = role
             it.isLogin = true
+            it.file_riwayat = file_riwayat
+            it.file_verifikasi = file_verifikasi
         }
 
         loading.dismiss()

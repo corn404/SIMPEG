@@ -14,6 +14,8 @@ class SharedUsers(val context: Context) {
         private const val NO_HP = "NO_HP"
         private const val LOGIN = "LOGIN"
         private const val ROLE = "ROLE"
+        private const val FILE_RIWAYAT = "FILE_RIWAYAT"
+        private const val FILE_VERIFIKASI = "FILE_VERIFIKASI"
     }
 
     private val data = PreferenceManager.getDefaultSharedPreferences(context)
@@ -44,4 +46,10 @@ class SharedUsers(val context: Context) {
 
     var no_hp = data.getString(NO_HP, "")
         set(value) = data.edit().putString(NO_HP, value).apply()
+
+    var file_riwayat = data.getString(FILE_RIWAYAT, "")
+        set(value) = data.edit().putString(FILE_RIWAYAT, value).apply()
+
+    var file_verifikasi = data.getString(FILE_VERIFIKASI, "")
+        set(value) = data.edit().putString(FILE_VERIFIKASI, value).apply()
 }

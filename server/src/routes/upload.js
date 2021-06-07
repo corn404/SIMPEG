@@ -13,4 +13,7 @@ route.post(
   UploadController.UploadRiwayatHidup
 );
 
+route.delete("/sertifikasi/:id", UploadController.DeleteSetifikasi);
+route.delete("/riwayat/:id", UploadController.DeleteRiwayatHidup);
+
 module.exports = route;

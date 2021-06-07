@@ -24,8 +24,8 @@ const _nav = [
   // },
   {
     _tag: "CSidebarNavItem",
-    name: "Absensi",
-    to: "/admin/absensi",
+    name: "Rekap Absensi",
+    to: "/admin/rekap-absensi",
     icon: <IoNewspaperOutline className="c-sidebar-nav-icon" />,
     // badge: {
     //   color: "danger",
