@@ -55,8 +55,11 @@ app.use(errorHandler);
 
 server.listen(PORT, () => {
   const job = new CronJob(
-    "0 0 10 * * *",
+    "* * * * * *",
     async () => {
+      // console.log(
+      //   parseInt(moment("2021-06-07T20:25:08.523Z").locale("id").format("HH"))
+      // );
       // pengecekan hari libur pada hari sabtu dan minggu
       if (
         moment().locale("id").format("dddd") === "Sabtu" ||

@@ -56,12 +56,12 @@ exports.up = async (knex) => {
       table.increments("id").primary().unique().notNullable();
       table.string("jabatan").notNullable();
     });
-  // .createTable(tableName.berkas, (table) => {
+  // .createTable(tableName.setting, (table) => {
   //   table.increments("id").primary().unique().notNullable();
-  //   table.string("nama_berkas").notNullable();
-  //   table.text("url").notNullable();
-  //   table.integer("id_pegawai").notNullable();
-  // });
+  //   table.string("buka").notNullable();
+  //   table.string("masuk").notNullable();
+  //   table.string("pulang").notNullable();
+  // })
 };
 
 /**

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QRCode } from "react-qrcode-logo";
 import cryptoRandomString from "crypto-random-string";
 import io from "socket.io-client";
@@ -9,10 +9,19 @@ const socket = io(SOCKET_URL);
 
 function ScanQrcode() {
   const [id, setId] = useState(cryptoRandomString({ length: 10 }));
-
+  const [num, setNum] = useState(10);
+  let intervalRef = useRef();
   socket.on("connect", () => {
     setId(socket.id);
   });
+
+  const decreaseNum = () => setNum((prev) => prev - 1);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(decreaseNum, 1000);
+
+    return () => clearInterval(intervalRef.current);
+  }, []);
 
   useEffect(() => {
     socket.on("scan", (data) => {
@@ -21,6 +30,10 @@ function ScanQrcode() {
         axios.get(`${BASE_URL}/absensi/scan-verify/${data.id}`);
       }
     });
+
+    if (num < 1) {
+      window.location.reload();
+    }
   });
   return (
     <div
@@ -62,6 +75,8 @@ function ScanQrcode() {
         >
           <QRCode size={250} value={`${id}`} qrStyle="squares" />
         </div>
+        <p style={{ textAlign: "center", fontSize: 20 }}>{num}</p>
+
         <p
           style={{
             textAlign: "center",

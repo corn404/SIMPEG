@@ -115,7 +115,7 @@ const CreateAbensi = async (req, res, next) => {
       .limit(1);
 
     // jika jam sekarang kurang dari jam 6 maka tidak bisa melakukan absen
-    if (moment().locale("id").format("HH") < 6) {
+    if (parseInt(moment().locale("id").format("HH")) < 6) {
       return WebResponse(res, 201, "Error", "Absensi akan dibuka pukul 06:00");
     }
 
@@ -127,7 +127,7 @@ const CreateAbensi = async (req, res, next) => {
         }
 
         // jika jam sekarang lebih kecil dari pukul 14
-        if (moment().locale("id").format("HH") < 14) {
+        if (parseInt(moment().locale("id").format("HH")) < 14) {
           return WebResponse(
             res,
             201,
@@ -152,7 +152,7 @@ const CreateAbensi = async (req, res, next) => {
         return WebResponse(res, 201, "Created", "Success", add);
       }
     } else {
-      if (moment().locale("id").format("HH") > 10) {
+      if (parseInt(moment().locale("id").format("HH")) > 10) {
         return WebResponse(
           res,
           201,
