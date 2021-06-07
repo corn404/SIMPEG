@@ -19,7 +19,7 @@ interface API {
     fun loginPegawai(@Body req: LoginRequest): Call<LoginResponse>
 
     @GET("absensi/pegawai")
-    fun getRekap(@Query("pegawai") pegawai: Int, @Query("bulan") bulan: Int):Call<RekapResponse>
+    fun getRekap(@Query("pegawai") pegawai: Int, @Query("bulan") bulan: String):Call<RekapResponse>
 
     @GET("absensi/scan")
     fun scanAbsensi(@Query("id") id:Int, @Query("token") token:String): Call<String>

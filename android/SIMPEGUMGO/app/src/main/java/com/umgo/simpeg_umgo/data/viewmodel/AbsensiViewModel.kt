@@ -25,7 +25,7 @@ class AbsensiViewModel: ViewModel() {
     }
 
 
-    fun getRekap(pegawai: Int, bulan:Int) {
+    fun getRekap(pegawai: Int, bulan:String) {
         viewModelScope.launch {
             API().getRekap(pegawai, bulan).enqueue(object : Callback<RekapResponse> {
                 override fun onResponse(

@@ -26,7 +26,7 @@ class RekapList : AppCompatActivity() {
         absensiViewModel = ViewModelProvider(this@RekapList).get(AbsensiViewModel::class.java)
         rekapAdapter = RekapAdapter(mutableListOf(), this@RekapList, absensiViewModel)
         var nama_bulan = intent.extras?.getString("nama_bulan").toString()
-        val id_bulan = intent.extras?.getInt("id_bulan")
+        val id_bulan = intent.extras?.getString("id_bulan")
 
         actionBar?.title = nama_bulan
         supportActionBar?.title = nama_bulan
@@ -40,7 +40,7 @@ class RekapList : AppCompatActivity() {
             adapter = rekapAdapter
         }
 
-        absensiViewModel.getRekap(sharedUsers.id_pegawai!!.toInt(), id_bulan.toString().toInt() )
+        absensiViewModel.getRekap(sharedUsers.id_pegawai!!.toInt(), id_bulan.toString() )
 
         absensiViewModel.listenRekap().observe(this@RekapList, Observer {
             if(it.isEmpty()) {
