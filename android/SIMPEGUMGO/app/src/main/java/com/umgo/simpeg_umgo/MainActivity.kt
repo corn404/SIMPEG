@@ -90,6 +90,8 @@ class MainActivity : AppCompatActivity() {
             no_hp = ""
             role = ""
             isLogin = false
+            file_riwayat = ""
+            file_verifikasi = ""
         }
         finish()
         startActivity(Intent(this@MainActivity, Login::class.java))
