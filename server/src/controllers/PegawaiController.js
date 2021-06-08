@@ -182,6 +182,8 @@ const ResetPassword = async (req, res, next) => {
       .update({ password })
       .where({ role: "user" })
       .andWhere({ id_pegawai: id });
+
+    await db(tableName.users).update({ imei: null }).where({ id_pegawai: id });
     if (reset) {
       return WebResponse(res, 200, "Updated", reset);
     }
