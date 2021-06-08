@@ -37,6 +37,7 @@ exports.up = async (knex) => {
         .notNullable()
         .comment("1=active, 0=blokir");
       table.integer("id_pegawai").notNullable();
+      table.string("imei", 150).nullable();
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table.timestamp("updated_at").defaultTo(knex.fn.now());
     })
@@ -56,12 +57,6 @@ exports.up = async (knex) => {
       table.increments("id").primary().unique().notNullable();
       table.string("jabatan").notNullable();
     });
-  // .createTable(tableName.setting, (table) => {
-  //   table.increments("id").primary().unique().notNullable();
-  //   table.string("buka").notNullable();
-  //   table.string("masuk").notNullable();
-  //   table.string("pulang").notNullable();
-  // })
 };
 
 /**
@@ -75,5 +70,4 @@ exports.down = async (knex) => {
     .dropTable(tableName.pegawai)
     .dropTable(tableName.jabatan)
     .dropTable(tableName.absensi);
-  // .dropTable(tableName.berkas);
 };

@@ -1,14 +1,18 @@
 package com.umgo.simpeg_umgo.ui.login
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
+import android.telephony.TelephonyManager
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.auth0.android.jwt.JWT
@@ -18,6 +22,7 @@ import com.umgo.simpeg_umgo.R
 import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.utils.SharedUsers
 import com.umgo.simpeg_umgo.data.viewmodel.AuthViewModel
+import java.util.jar.Manifest
 
 class Login : AppCompatActivity() {
     private lateinit var et_nip: EditText
@@ -27,7 +32,8 @@ class Login : AppCompatActivity() {
     private lateinit var jwt: JWT
     private lateinit var sharedUsers: SharedUsers
     private lateinit var authViewModel: AuthViewModel
-
+    private var IMEI = ""
+    private var REQUEST_PERMISSION = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +56,15 @@ class Login : AppCompatActivity() {
         )
         loading.setCancelable(false)
 
+        val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as
+                TelephonyManager
+        if (ActivityCompat.checkSelfPermission(this@Login,
+                android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this@Login,
+                arrayOf(android.Manifest.permission.READ_PHONE_STATE), REQUEST_PERMISSION)
+            return
+        }
+        IMEI = telephonyManager.deviceId
 
         btn_login.setOnClickListener {
             loading.show()
@@ -60,7 +75,7 @@ class Login : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val req = LoginRequest(et_nip.text.toString(), et_password.text.toString())
+                val req = LoginRequest(et_nip.text.toString(), et_password.text.toString(), IMEI)
                 authViewModel.login(req)
                 authViewModel.listenToken().observe(this@Login, Observer {
                     if (!it.isNullOrEmpty()) {
@@ -133,5 +148,20 @@ class Login : AppCompatActivity() {
         loading.dismiss()
         finish()
         startActivity(Intent(this@Login, MainActivity::class.java))
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            REQUEST_PERMISSION -> {
+                if(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission granted.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 }

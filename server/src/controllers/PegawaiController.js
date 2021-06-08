@@ -84,7 +84,7 @@ const GetPegawai = async (req, res, next) => {
 };
 
 const PegawaiLogin = async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password, imei } = req.body;
   console.log(req.body);
   try {
     const checkUser = await db(tableName.users).where({ username });
@@ -95,8 +95,19 @@ const PegawaiLogin = async (req, res, next) => {
         checkUser[0].password
       );
 
-      console.log(checkPass);
       if (checkPass) {
+        if (checkUser[0].imei === null) {
+          await db(tableName.users)
+            .update({ imei })
+            .where({ id: checkUser[0].id });
+        } else if (checkUser[0].imei !== imei) {
+          return WebResponse(
+            res,
+            200,
+            "Error",
+            "Mohon maaf anda harus login ke device anda, silahkan hubungi admin"
+          );
+        }
         const getPegawai = await db(tableName.users)
           .select(
             `${tableName.users}.id`,
@@ -121,7 +132,6 @@ const PegawaiLogin = async (req, res, next) => {
             `${tableName.pegawai}.id`
           )
           .where({ id_pegawai: checkUser[0].id_pegawai });
-        console.log(getPegawai);
 
         // const data = { ...getPegawai[0] };
 

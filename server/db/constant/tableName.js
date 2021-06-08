@@ -3,5 +3,4 @@ module.exports = {
   pegawai: "t_pegawai",
   absensi: "t_absensi",
   jabatan: "t_jabatan",
-  setting: "t_setting",
 };

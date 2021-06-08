@@ -57,6 +57,7 @@ const ModalUpdate = ({ modal, setModal, item }) => {
     pegawai === 0 && errors("jenis pegawai belum dipilih");
     jabatan === 0 && errors("jabatan belum dipilih");
     nohp === "" && errors("Nomor hp masih kosong");
+    nohp.length <= 12 && errors("Nomor Hp belum lengkap");
     if (
       nama !== "" &&
       nama !== "" &&
@@ -66,7 +67,8 @@ const ModalUpdate = ({ modal, setModal, item }) => {
       pendidikan !== "" &&
       pegawai !== 0 &&
       jabatan !== 0 &&
-      nohp !== ""
+      nohp !== "" &&
+      nohp.length >= 12
     ) {
       const data = {
         id,

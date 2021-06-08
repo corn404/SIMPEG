@@ -54,6 +54,7 @@ const ModalTambah = ({ modal, setModal }) => {
     pegawai === 0 && errors("jenis pegawai belum dipilih");
     jabatan === 0 && errors("jabatan belum dipilih");
     nohp === "" && errors("Nomor hp masih kosong");
+    nohp.length <= 12 && errors("Nomor Hp belum lengkap");
     if (
       nama !== "" &&
       nama !== "" &&
