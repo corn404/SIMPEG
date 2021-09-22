@@ -63,9 +63,39 @@ const GetMapPangkat = async (req, res, next) => {
   }
 };
 
+const AddMapPangkat = async (req, res, next) => {
+  const { id_pangkat, keterangan } = req.body;
+  try {
+    const add = await db(tableName.mappingUpload).insert({
+      id_pangkat,
+      keterangan,
+    });
+    if (add) {
+      return WebResponse(res, 201, "Success", add);
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const DellMapPangkat = async (req, res, next) => {
+  const { id } = req.query;
+  try {
+    const del = await db(tableName.mappingUpload).where({ id }).delete();
+
+    if (del) {
+      return WebResponse(res, 200, "Success", "Hapus Data berhasil");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   GetPangkat,
   AddPangkat,
   DelPangkat,
   GetMapPangkat,
+  AddMapPangkat,
+  DellMapPangkat,
 };

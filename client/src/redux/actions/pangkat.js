@@ -49,3 +49,27 @@ export const getMapPangkat = (id) => async (dispatch) => {
     messageError("Ada masalah pada server, silahkan hubungi admin");
   }
 };
+
+export const addMapPangkat = (data) => async (dispatch) => {
+  try {
+    const add = await axios.post(`${BASE_URL}/pangkat/map`, data);
+    if (add.data.status === "Success") {
+      messageSuccess("Success");
+      dispatch(getMapPangkat(data.id_pangkat));
+    }
+  } catch (error) {
+    messageError("Ada masalah pada server, silahkan hubungi admin");
+  }
+};
+
+export const hapusMapPangkat = (id, idPangkat) => async (dispatch) => {
+  try {
+    const dell = await axios.delete(`${BASE_URL}/pangkat/map?id=${id}`);
+    if (dell.data.status === "Success") {
+      messageSuccess("Success");
+      dispatch(getMapPangkat(idPangkat));
+    }
+  } catch (error) {
+    messageError("Ada masalah pada server, silahkan hubungi admin");
+  }
+};

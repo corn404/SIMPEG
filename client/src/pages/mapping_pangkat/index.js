@@ -26,16 +26,20 @@ import "quill/dist/quill.snow.css";
 import {
   getMapPangkat,
   getPangkat,
+  hapusMapPangkat,
   hapusPangkat,
 } from "src/redux/actions/pangkat";
+import ModalTambah2 from "./ModalTambah2";
 
 const MappingPangkat = () => {
   const dispatch = useDispatch();
   const dataPangkat = useSelector((x) => x.pangkat.data);
   const dataMapPangkat = useSelector((x) => x.pangkat.map);
   const [maptitle, setMapTitle] = useState("");
+  const [idMap, setIdMap] = useState("");
 
   const [modal, setModal] = useState(false);
+  const [modal2, setModal2] = useState(false);
   const columnUploads = [
     { key: "no", label: "NO", _style: { width: "100px" } },
     { key: "keterangan", label: "KETERANGAN" },
@@ -74,8 +78,24 @@ const MappingPangkat = () => {
     });
   };
 
+  const handleHapusMap = (item) => {
+    Swal.fire({
+      title: "yakin ingin menghapus mapping ini ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(hapusMapPangkat(item.id, item.id_pangkat));
+        // console.log(item.);
+      }
+    });
+  };
   const handleSelect = (item) => {
     setMapTitle(`${item.pangkat} - ${item.golongan}/${item.ruang}`);
+    setIdMap(item.id);
     dispatch(getMapPangkat(item.id));
   };
 
@@ -172,7 +192,8 @@ const MappingPangkat = () => {
                   <CButton
                     color="primary"
                     className="float-right"
-                    onClick={() => setModal(!modal)}
+                    disabled={idMap !== "" ? false : true}
+                    onClick={() => setModal2(!modal2)}
                   >
                     Tambah Mapping
                   </CButton>
@@ -205,7 +226,7 @@ const MappingPangkat = () => {
                         <CButton
                           size="sm"
                           color="danger"
-                          onClick={() => handleHapus(item)}
+                          onClick={() => handleHapusMap(item)}
                         >
                           <IoTrashOutline />
                         </CButton>
@@ -220,6 +241,9 @@ const MappingPangkat = () => {
       </CRow>
 
       <ModalTambah modal={modal} setModal={setModal} />
+      {idMap !== "" && (
+        <ModalTambah2 modal={modal2} setModal={setModal2} idPangkat={idMap} />
+      )}
     </>
   );
 };
