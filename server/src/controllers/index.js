@@ -3,6 +3,8 @@ const AbsensiController = require("./AbsensiController");
 const AuthController = require("./AuthController");
 const JabatanController = require("./JabatanController");
 const UploadController = require("./UploadController");
+const PangkatController = require("./PangkatController");
+const CutiController = require("./CutiController");
 
 module.exports = {
   PegawaiController,
@@ -10,4 +12,6 @@ module.exports = {
   AuthController,
   JabatanController,
   UploadController,
+  PangkatController,
+  CutiController,
 };

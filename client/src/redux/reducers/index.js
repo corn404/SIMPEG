@@ -5,6 +5,8 @@ import Pegawai from "./pegawai";
 import Users from "./users";
 import Absensi from "./absensi";
 import Jabatan from "./jabatan";
+import Cuti from "./cuti";
+import Pangkat from "./pangkat";
 
 export default combineReducers({
   app: App,
@@ -13,4 +15,6 @@ export default combineReducers({
   users: Users,
   absensi: Absensi,
   jabatan: Jabatan,
+  cuti: Cuti,
+  pangkat: Pangkat,
 });

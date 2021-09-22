@@ -20,10 +20,12 @@ exports.up = async (knex) => {
         .notNullable()
         .comment("1=pegaiwai biasa, 2=dosen");
       table.integer("id_jabatan").notNullable();
+      table.integer("id_pangkat").nullable();
       table.string("no_hp", 20).nullable();
       table.text("sertifikasi").nullable();
       table.text("riwayat_hidup").nullable();
       table.integer("status").defaultTo(1).unsigned().notNullable();
+      table.enum("status_cuti", ["Y", "N"]).defaultTo("N");
     })
     .createTable(tableName.users, (table) => {
       table.increments("id").primary().unique().notNullable();
@@ -56,6 +58,29 @@ exports.up = async (knex) => {
     .createTable(tableName.jabatan, (table) => {
       table.increments("id").primary().unique().notNullable();
       table.string("jabatan").notNullable();
+    })
+    .createTable(tableName.pangkat, (table) => {
+      table.increments("id").primary().unique().notNullable();
+      table.string("pangkat").notNullable();
+      table.string("golongan").notNullable();
+      table.string("ruang").notNullable();
+    })
+    .createTable(tableName.cuti, (table) => {
+      table.increments("id").primary().unique().notNullable();
+      table.integer("id_pegawai").notNullable();
+      table.date("mulai_cuti").notNullable();
+      table.date("akhir_cuti").notNullable();
+    })
+    .createTable(tableName.mappingUpload, (table) => {
+      table.increments("id").primary().unique().notNullable();
+      table.integer("id_pangkat").notNullable();
+      table.text("keterangan").notNullable();
+    })
+    .createTable(tableName.tampungUpload, (table) => {
+      table.increments("id").primary().unique().notNullable();
+      table.integer("id_mapping").notNullable();
+      table.integer("id_pegawai").notNullable();
+      table.text("nama_file").notNullable();
     });
 };
 
@@ -69,5 +94,10 @@ exports.down = async (knex) => {
     .dropTable(tableName.users)
     .dropTable(tableName.pegawai)
     .dropTable(tableName.jabatan)
-    .dropTable(tableName.absensi);
+    .dropTable(tableName.absensi)
+    .dropTable(tableName.pangkat)
+    .dropTable(tableName.jabatan)
+    .dropTable(tableName.cuti)
+    .dropTable(tableName.mappingUpload)
+    .dropTable(tableName.tampungUpload);
 };

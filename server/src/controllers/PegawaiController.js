@@ -66,6 +66,7 @@ const GetPegawai = async (req, res, next) => {
         `${tableName.pegawai}.pendidikan`,
         `${tableName.pegawai}.no_hp`,
         `${tableName.pegawai}.status`,
+        `${tableName.pegawai}.status_cuti`,
         `${tableName.pegawai}.jenis_pegawai`,
         `${tableName.pegawai}.id_jabatan`,
         `${tableName.pegawai}.sertifikasi`,
@@ -124,15 +125,26 @@ const PegawaiLogin = async (req, res, next) => {
             `${tableName.pegawai}.id_jabatan`,
             `${tableName.pegawai}.sertifikasi`,
             `${tableName.pegawai}.riwayat_hidup`,
-            `${tableName.pegawai}.no_hp`
+            `${tableName.pegawai}.no_hp`,
+            `${tableName.pegawai}.status_cuti`,
+            `${tableName.pegawai}.id_pangkat`,
+            `${tableName.pangkat}.pangkat`,
+            `${tableName.pangkat}.golongan`,
+            `${tableName.pangkat}.ruang`
           )
           .join(
             tableName.pegawai,
             `${tableName.users}.id_pegawai`,
             `${tableName.pegawai}.id`
           )
+          .leftJoin(
+            tableName.pangkat,
+            `${tableName.pegawai}.id_pangkat`,
+            `${tableName.pangkat}.id`
+          )
           .where({ id_pegawai: checkUser[0].id_pegawai });
 
+        console.log(getPegawai);
         // const data = { ...getPegawai[0] };
 
         const token = await jwt.sign({ ...getPegawai[0] }, "7qvt6t2738");
@@ -150,6 +162,7 @@ const PegawaiLogin = async (req, res, next) => {
       return WebResponse(res, 200, "Error", "Username tidak terdaftar");
     }
   } catch (error) {
+    console.log(error);
     return next(error);
   }
 };
@@ -178,15 +191,21 @@ const ResetPassword = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSaltSync(12);
     const password = await bcrypt.hashSync(nidn, salt);
-    const reset = await db(tableName.users)
-      .update({ password })
-      .where({ role: "user" })
-      .andWhere({ id_pegawai: id });
+    await db.transaction(async (trx) => {
+      const reset = await db(tableName.users)
+        .update({ password })
+        .where({ role: "user" })
+        .andWhere({ id_pegawai: id })
+        .transacting(trx);
 
-    await db(tableName.users).update({ imei: null }).where({ id_pegawai: id });
-    if (reset) {
-      return WebResponse(res, 200, "Updated", reset);
-    }
+      await db(tableName.users)
+        .update({ imei: null })
+        .where({ id_pegawai: id })
+        .transacting(trx);
+      if (reset) {
+        return WebResponse(res, 200, "Updated", reset);
+      }
+    });
   } catch (error) {
     return next(error);
   }

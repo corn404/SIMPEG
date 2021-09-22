@@ -1,5 +1,5 @@
 const moment = require("moment");
-const { whereBetween } = require("../../db");
+const {whereBetween} = require("../../db");
 const db = require("../../db");
 const tableName = require("../../db/constant/tableName");
 const WebResponse = require("../utils/WebResponse");
@@ -55,7 +55,7 @@ const GetAbsensi = async (req, res, next) => {
 };
 
 const GetAbsensiByMonth = async (req, res, next) => {
-  const { pegawai, bulan } = req.query;
+  const {pegawai, bulan} = req.query;
   const year = moment().format("yyyy");
 
   const blnStart = moment(`${year}-${bulan}-01 00:00:00`)
@@ -68,32 +68,32 @@ const GetAbsensiByMonth = async (req, res, next) => {
     const data = await db(tableName.absensi)
       // .whereRaw(db.raw(`MONTH(${tableName.absensi}.tgl_absen) = ?`, [bulan]))
       .whereBetween(`${tableName.absensi}.tgl_absen`, [blnStart, blnEnd])
-      .andWhere({ id_pegawai: pegawai });
+      .andWhere({id_pegawai: pegawai});
 
     const hadir = await db(tableName.absensi)
       // .whereRaw(db.raw(`MONTH(${tableName.absensi}.tgl_absen) = ?`, [bulan]))
       .whereBetween(`${tableName.absensi}.tgl_absen`, [blnStart, blnEnd])
-      .andWhere({ status: 1 })
+      .andWhere({status: 1})
       // .andWhere({ masuk: 1 })
       // .andWhere({ pulang: 1 })
-      .andWhere({ id_pegawai: pegawai })
+      .andWhere({id_pegawai: pegawai})
       .select(`${tableName.absensi}.id_pegawai`)
-      .count(`${tableName.absensi}.id_pegawai`, { as: "hadir" })
+      .count(`${tableName.absensi}.id_pegawai`, {as: "hadir"})
       .groupBy(`${tableName.absensi}.id_pegawai`);
 
     const absen = await db(tableName.absensi)
       // .whereRaw(db.raw(`MONTH(${tableName.absensi}.tgl_absen) = ?`, [bulan]))
       .whereBetween(`${tableName.absensi}.tgl_absen`, [blnStart, blnEnd])
-      .andWhere({ status: 2 })
-      .andWhere({ id_pegawai: pegawai })
+      .andWhere({status: 2})
+      .andWhere({id_pegawai: pegawai})
       .select(`${tableName.absensi}.id_pegawai`)
-      .count(`${tableName.absensi}.id_pegawai`, { as: "absen" })
+      .count(`${tableName.absensi}.id_pegawai`, {as: "absen"})
       .groupBy(`${tableName.absensi}.id_pegawai`);
 
     const dataRekap = {
       rekap: data,
-      hadir: hadir.length > 0 ? hadir[0] : { id_pegawai: null, hadir: null },
-      absen: absen.length > 0 ? absen[0] : { id_pegawai: null, absen: null },
+      hadir: hadir.length > 0 ? hadir[0] : {id_pegawai: null, hadir: null},
+      absen: absen.length > 0 ? absen[0] : {id_pegawai: null, absen: null},
     };
 
     return WebResponse(res, 200, "Success", dataRekap);
@@ -103,7 +103,7 @@ const GetAbsensiByMonth = async (req, res, next) => {
 };
 
 const CreateAbensi = async (req, res, next) => {
-  const { id_pegawai } = req.params;
+  const {id_pegawai} = req.params;
   const tanggal = moment().format("yyyyMMDD");
   try {
     // pengecekan apakah sudah melakukan absen sebelumnya
@@ -139,7 +139,7 @@ const CreateAbensi = async (req, res, next) => {
             .update({
               pulang: 1,
             })
-            .where({ id: checkData[0].id });
+            .where({id: checkData[0].id});
           return WebResponse(res, 201, "Created", "Success", update);
         }
       } else {
@@ -175,7 +175,7 @@ const CreateAbensi = async (req, res, next) => {
 };
 
 const GetAbsensiByPegawai = async (req, res, next) => {
-  const { pegawai, bulan } = req.query;
+  const {pegawai, bulan} = req.query;
   const year = moment().format("yyyy");
 
   const blnStart = moment(`${year}-${bulan}-01 00:00:00`)
@@ -203,7 +203,7 @@ const GetAbsensiByPegawai = async (req, res, next) => {
         `${tableName.absensi}.id_pegawai`,
         `${tableName.pegawai}.id`
       )
-      .where({ id_pegawai: pegawai })
+      .where({id_pegawai: pegawai})
       // .whereRaw(`MONTH(${tableName.absensi}.tgl_absen) = ?`, [bulan])
       .whereBetween(`${tableName.absensi}.tgl_absen`, [blnStart, blnEnd])
       .orderBy("id", "asc");
@@ -214,9 +214,9 @@ const GetAbsensiByPegawai = async (req, res, next) => {
 };
 
 const ScanAbsensi = async (req, res, next) => {
-  const { token, id } = req.query;
+  const {token, id} = req.query;
   try {
-    req.io.sockets.emit("scan", { id, token });
+    req.io.sockets.emit("scan", {id, token});
     return WebResponse(res, 201, "Success");
   } catch (error) {
     return next(error);
@@ -224,7 +224,7 @@ const ScanAbsensi = async (req, res, next) => {
 };
 
 const ScanVerify = async (req, res, next) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     req.io.sockets.emit("scan-success", id);
     return WebResponse(res, 201, "Success");

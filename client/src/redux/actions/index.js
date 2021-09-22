@@ -13,3 +13,10 @@ export const GET_PEGAWAI = "GET_PEGAWAI";
 
 // jabatan
 export const GET_JABATAN = "GET_JABATAN";
+
+// cuti
+export const GET_CUTI = "GET_CUTI";
+
+// pangkat
+export const GET_PANGKAT = "GET_PANGKAT";
+export const GET_MAP_PANGKAT = "GET_MAP_PANGKAT";

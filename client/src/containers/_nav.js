@@ -36,7 +36,7 @@ const _nav = [
     _tag: "CSidebarNavItem",
     name: "Pegawai",
     to: "/admin/pegawai",
-    icon: <IoAccessibilityOutline className="c-sidebar-nav-icon" />,
+    icon: <IoLayers className="c-sidebar-nav-icon" />,
   },
 
   {
@@ -47,8 +47,35 @@ const _nav = [
   },
 
   {
+    _tag: "CSidebarNavItem",
+    name: "Cuti",
+    to: "/admin/cuti",
+    icon: <IoLayers className="c-sidebar-nav-icon" />,
+  },
+
+  // {
+  //   _tag: "CSidebarNavItem",
+  //   name: "Golongan",
+  //   to: "/admin/golongan",
+  //   icon: <IoLayers className="c-sidebar-nav-icon" />,
+  // },
+
+  {
+    _tag: "CSidebarNavItem",
+    name: "Pangkat Dan Golongan",
+    to: "/admin/pangkat",
+    icon: <IoLayers className="c-sidebar-nav-icon" />,
+  },
+
+  {
     _tag: "CSidebarNavTitle",
     _children: ["SETTINGS"],
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Pangkat",
+    to: "/setting/pangkat",
+    icon: <IoLayers className="c-sidebar-nav-icon" />,
   },
   {
     _tag: "CSidebarNavItem",
