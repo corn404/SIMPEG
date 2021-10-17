@@ -71,12 +71,21 @@ const GetPegawai = async (req, res, next) => {
         `${tableName.pegawai}.id_jabatan`,
         `${tableName.pegawai}.sertifikasi`,
         `${tableName.pegawai}.riwayat_hidup`,
-        `${tableName.jabatan}.jabatan`
+        `${tableName.jabatan}.jabatan`,
+        `${tableName.pegawai}.id_pangkat`,
+        `${tableName.pangkat}.pangkat`,
+        `${tableName.pangkat}.golongan`,
+        `${tableName.pangkat}.ruang`
       )
       .join(
         tableName.jabatan,
         `${tableName.pegawai}.id_jabatan`,
         `${tableName.jabatan}.id`
+      )
+      .join(
+        tableName.pangkat,
+        `${tableName.pegawai}.id_pangkat`,
+        `${tableName.pangkat}.id`
       );
     return WebResponse(res, 200, "Success", data);
   } catch (error) {

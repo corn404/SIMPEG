@@ -55,7 +55,9 @@ const GetPangkatById = async (req, res, next) => {
 const GetMapPangkat = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const data = await db(tableName.mappingUpload).select("*").where({ id });
+    const data = await db(tableName.mappingUpload)
+      .select("*")
+      .where({ id_pangkat: id });
 
     return WebResponse(res, 200, "Success", data);
   } catch (error) {

@@ -1,6 +1,9 @@
 const route = require("express").Router();
+const { pegawai } = require("../../db/constant/tableName");
 const { UploadController } = require("../controllers");
 const { uploadFile } = require("../utils/uploads");
+
+route.get("/check", UploadController.CheckUpload); // ?pegawai=1&pangkat=1
 
 route.post(
   "/sertifikasi/:id",
