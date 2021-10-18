@@ -22,7 +22,6 @@ import com.umgo.simpeg_umgo.R
 import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.utils.SharedUsers
 import com.umgo.simpeg_umgo.data.viewmodel.AuthViewModel
-import java.util.jar.Manifest
 
 class Login : AppCompatActivity() {
     private lateinit var et_nip: EditText
@@ -35,6 +34,7 @@ class Login : AppCompatActivity() {
     private var IMEI = ""
     private var REQUEST_PERMISSION = 101
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -90,6 +90,8 @@ class Login : AppCompatActivity() {
                         val role = jwt.getClaim("role").asString()
                         val sertifikasi = jwt.getClaim("sertifikasi").asString()
                         val riwayat_hidup = jwt.getClaim("riwayat_hidup").asString()
+                        val id_pangkat = jwt.getClaim("id_pangkat").asString()
+                        val pangkat = "${jwt.getClaim("pangkat").asString()} ${jwt.getClaim("golongan").asString()}/${jwt.getClaim("ruang").asString()}"
                         login(
                             id_pegawai.toString(),
                             nip.toString(),
@@ -100,7 +102,9 @@ class Login : AppCompatActivity() {
                             no_hp.toString(),
                             role.toString(),
                             riwayat_hidup.toString(),
-                            sertifikasi.toString()
+                            sertifikasi.toString(),
+                            id_pangkat.toString(),
+                            pangkat
                         )
                     }
                 })
@@ -128,8 +132,10 @@ class Login : AppCompatActivity() {
         jabatan: String?,
         no_hp: String,
         role: String,
-        file_riwayat:String,
-        file_verifikasi: String
+        file_riwayat: String,
+        file_verifikasi: String,
+        id_pangkat: String,
+        pangkat: String
     ) {
         sharedUsers.let {
             it.id_pegawai = id_pegawai
@@ -143,6 +149,8 @@ class Login : AppCompatActivity() {
             it.isLogin = true
             it.file_riwayat = file_riwayat
             it.file_verifikasi = file_verifikasi
+            it.id_pangkat = id_pangkat
+            it.pangkat = pangkat
         }
 
         loading.dismiss()

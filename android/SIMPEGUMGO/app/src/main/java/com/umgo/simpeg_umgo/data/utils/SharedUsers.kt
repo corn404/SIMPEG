@@ -16,6 +16,8 @@ class SharedUsers(val context: Context) {
         private const val ROLE = "ROLE"
         private const val FILE_RIWAYAT = "FILE_RIWAYAT"
         private const val FILE_VERIFIKASI = "FILE_VERIFIKASI"
+        private const val ID_PANGKAT = "ID_PANGKAT"
+        private const val PANGKAT = "PANGKAT"
     }
 
     private val data = PreferenceManager.getDefaultSharedPreferences(context)
@@ -52,4 +54,9 @@ class SharedUsers(val context: Context) {
 
     var file_verifikasi = data.getString(FILE_VERIFIKASI, "")
         set(value) = data.edit().putString(FILE_VERIFIKASI, value).apply()
+
+    var id_pangkat = data.getString(ID_PANGKAT, "")
+        set(value) = data.edit().putString(ID_PANGKAT, value).apply()
+    var pangkat = data.getString(PANGKAT, "")
+        set(value) = data.edit().putString(PANGKAT, value).apply()
 }

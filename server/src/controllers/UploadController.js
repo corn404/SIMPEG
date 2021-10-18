@@ -90,10 +90,61 @@ const CheckUpload = async (req, res, next) => {
   }
 };
 
+const SudahDiUpload = async (req, res, next) => {
+  const { pangkat, pegawai } = req.query;
+  try {
+    const dataMapping = await db(tableName.mappingUpload)
+      .select("*")
+      .where("id_pangkat", pangkat);
+    const dataUpload = await db(tableName.mappingUpload)
+      .select(
+        `${tableName.mappingUpload}.id_pangkat`,
+        `${tableName.mappingUpload}.keterangan`,
+        `${tableName.tampungUpload}.nama_file`,
+        `${tableName.tampungUpload}.id_pegawai`,
+        `${tableName.tampungUpload}.id_mapping`
+      )
+      .leftJoin(
+        tableName.tampungUpload,
+        `${tableName.mappingUpload}.id`,
+        `${tableName.tampungUpload}.id_mapping`
+      )
+      .where(`${tableName.tampungUpload}.id_pegawai`, pegawai)
+      .andWhere(`${tableName.mappingUpload}.id_pangkat`, pangkat);
+
+    // const DATA = {
+    //   dataMapping: dataMapping,
+    //   dataUpload: dataUpload,
+    // };
+
+    const _data = dataMapping.map((item) => {
+      const a = dataUpload.filter((i) => i.id_mapping == item.id);
+      if (a.length > 0) {
+        return {
+          ...item,
+          status: true,
+          file: a[0].nama_file,
+        };
+      } else {
+        return {
+          ...item,
+          status: false,
+          file: "",
+        };
+      }
+    });
+
+    return WebResponse(res, 200, "OK", _data);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   UploadSetifikasi,
   UploadRiwayatHidup,
   DeleteRiwayatHidup,
   DeleteSetifikasi,
   CheckUpload,
+  SudahDiUpload,
 };

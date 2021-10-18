@@ -20,7 +20,7 @@ exports.up = async (knex) => {
         .notNullable()
         .comment("1=pegaiwai biasa, 2=dosen");
       table.integer("id_jabatan").notNullable();
-      table.integer("id_pangkat").nullable();
+      table.integer("id_pangkat").defaultTo(1).nullable();
       table.string("no_hp", 20).nullable();
       table.text("sertifikasi").nullable();
       table.text("riwayat_hidup").nullable();

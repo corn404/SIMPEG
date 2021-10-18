@@ -62,6 +62,7 @@ class Pegawai : Fragment(), UploadRequestBody.UploadCallback  {
         binding?.textJenisKelamin?.text =
             if (sharedUsers.kelamin == "L") "Jenis Kelamin : Laki - Laki" else "Jenis Kelamin : Perempuan"
         binding?.textPendidikan?.text = "Pendidikan : ${sharedUsers.pendidikan}"
+        binding?.textPangkat?.text = "Pangkat : ${sharedUsers.pangkat}"
 
         sharedUsers.let {
             if(it.file_riwayat.isNullOrEmpty()) {

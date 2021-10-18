@@ -11,7 +11,11 @@ import {
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
 // import { deleteUser, resetPassword } from "src/redux/actions/users";
-import { IoEye, IoReload, IoTrashOutline } from "react-icons/io5";
+import {
+  IoArrowDownOutline,
+  IoArrowUpOutline,
+  IoTrashOutline,
+} from "react-icons/io5";
 import ModalTambah from "./ModalTambah";
 import Swal from "sweetalert2";
 import { getCuti, DeleteCuti } from "src/redux/actions/cuti";
@@ -21,14 +25,15 @@ import moment from "moment";
 const Pangkat = () => {
   const dispatch = useDispatch();
   const dataCuti = useSelector((x) => x.cuti.data);
+  const dataPegawai = useSelector((x) => x.pegawai.data);
 
   const [modal, setModal] = useState(false);
   const columns = [
     { key: "no", label: "NO", _style: { width: "100px" } },
+    { key: "nidn", label: "NIDN/NIDY" },
     { key: "nama", label: "NAMA PEGAWAI" },
-    { key: "jabatan", label: "JABATAN" },
-    { key: "mulai_cuti", label: "MULAI" },
-    { key: "akhir_cuti", label: "BERAKHIR" },
+    { key: "pendidikan", label: "PENDIDIKAN" },
+    { key: "pangkat", label: "PANGKAT/GOLONGAN" },
     {
       key: "aksi",
       label: "AKSI",
@@ -66,7 +71,7 @@ const Pangkat = () => {
                 Data Pangkat Dan Golongan
               </h4>
             </CCol>
-            <CCol sm="7" className="d-none d-md-block">
+            {/* <CCol sm="7" className="d-none d-md-block">
               <CButton
                 color="primary"
                 className="float-right"
@@ -74,12 +79,12 @@ const Pangkat = () => {
               >
                 Tambah
               </CButton>
-            </CCol>
+            </CCol> */}
           </CRow>
         </CCardHeader>
         <CCardBody>
           <CDataTable
-            items={dataCuti}
+            items={dataPegawai}
             fields={columns}
             itemsPerPageSelect
             itemsPerPage={5}
@@ -97,15 +102,28 @@ const Pangkat = () => {
               akhir_cuti: (item) => (
                 <td>{moment(item.akhir_cuti).format("DD-MM-YYYY")}</td>
               ),
+              pangkat: (item) => (
+                <td>
+                  {item.pangkat} - {item.golongan}/{item.ruang}
+                </td>
+              ),
               aksi: (item) => (
                 <>
                   <td style={{ textAlign: "center" }}>
                     <CButton
                       size="sm"
-                      color="danger"
+                      color="warning"
+                      style={{ marginRight: 5 }}
                       onClick={() => handleHapus(item)}
                     >
-                      <IoTrashOutline />
+                      <IoArrowDownOutline />
+                    </CButton>
+                    <CButton
+                      size="sm"
+                      color="success"
+                      onClick={() => handleHapus(item)}
+                    >
+                      <IoArrowUpOutline />
                     </CButton>
                   </td>
                 </>

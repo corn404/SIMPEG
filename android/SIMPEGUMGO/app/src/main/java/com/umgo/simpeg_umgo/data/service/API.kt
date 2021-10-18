@@ -1,8 +1,8 @@
 package com.umgo.simpeg_umgo.data.service
 
+import com.umgo.simpeg_umgo.data.model.upload.CheckResponse
 import com.umgo.simpeg_umgo.data.model.absen.AbsenResponse
 import com.umgo.simpeg_umgo.data.model.absen.RekapResponse
-import com.umgo.simpeg_umgo.data.model.absen.ScanRequest
 import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.model.login.LoginResponse
 import com.umgo.simpeg_umgo.data.model.login.UpdatePasswordRequest
@@ -44,9 +44,12 @@ interface API {
     @DELETE("upload/riwayat/{id}")
     fun deleteRiwayat(@Path("id") id:Int): Call<AbsenResponse>
 
+    @GET("upload/check")
+    fun checkUpload(@Query("pegawai") pegawai: Int, @Query("pangkat") pangkat: Int): Call<CheckResponse>
+
     companion object {
-        val BASE_URL = "http://192.168.0.112:5000/api/v1/"
-        val URL_SOCKETS = "http://192.168.0.112:5000"
+        val BASE_URL = "http://192.168.43.217:5000/api/v1/"
+        val URL_SOCKETS = "http://192.168.43.217:5000"
         operator fun invoke(): API {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

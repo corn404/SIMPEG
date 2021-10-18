@@ -73,6 +73,17 @@ tools:context=".ui.fragments.Pegawai.Pegawai">
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/text_pangkat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Pangkat : "
+            android:textAlignment="center"
+            android:textColor="@color/text_color2"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
 
     </LinearLayout>
 
