@@ -3,6 +3,7 @@ import moment from "moment";
 import { messageError, messageSuccess } from "src/utils";
 // import Swal from "sweetalert2";
 import { BASE_URL, GET_MAP_PANGKAT, GET_PANGKAT } from ".";
+import { getPegawai } from "./pegawai";
 
 export const addPangkat = (data) => async (dispatch) => {
   try {
@@ -72,4 +73,32 @@ export const hapusMapPangkat = (id, idPangkat) => async (dispatch) => {
   } catch (error) {
     messageError("Ada masalah pada server, silahkan hubungi admin");
   }
+};
+
+export const naikPangkat = (pangkat, pegawai) => async (dispatch) => {
+  try {
+    const rest = await axios.post(
+      `${BASE_URL}/pangkat/naik?pangkat=${pangkat}&pegawai=${pegawai}`
+    );
+    if (rest.data.status === "Success") {
+      messageSuccess("Success");
+      dispatch(getPegawai());
+    } else {
+      messageError(rest.data.data);
+    }
+  } catch (error) {}
+};
+
+export const turunPangkat = (pangkat, pegawai) => async (dispatch) => {
+  try {
+    const rest = await axios.post(
+      `${BASE_URL}/pangkat/turun?pangkat=${pangkat}&pegawai=${pegawai}`
+    );
+    if (rest.data.status === "Success") {
+      messageSuccess("Success");
+      dispatch(getPegawai());
+    } else {
+      messageError(rest.data.data);
+    }
+  } catch (error) {}
 };

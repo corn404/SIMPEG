@@ -23,6 +23,9 @@ const ModalTambah = ({ modal, setModal }) => {
   const dispatch = useDispatch();
   const [nama, setNama] = useState(null);
   const [tanggal, setTanggal] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+
   const kosong = () => {
     setNama(null);
     setTanggal("");
@@ -38,10 +41,11 @@ const ModalTambah = ({ modal, setModal }) => {
 
   const handleTambah = () => {
     nama === null && errors("Nama Pegawai masih kosong");
-    tanggal === "" && errors("Tentukan tanggal");
+    start === "" && errors("Tentukan tanggal mulai cuti");
+    end === "" && errors("Tentukan tanggal akhir cuti");
 
-    if (nama !== null && tanggal !== "") {
-      dispatch(AddCuti(nama, tanggal));
+    if (nama !== null && start !== "" && end !== "") {
+      dispatch(AddCuti(nama, start, end));
       setModal(false);
       kosong();
     }
@@ -73,12 +77,25 @@ const ModalTambah = ({ modal, setModal }) => {
         <CRow>
           <CCol xs="12">
             <CFormGroup>
-              <CLabel htmlFor="jabatan">Tanggal Cuti</CLabel>
+              <CLabel htmlFor="jabatan">Mulai Cuti</CLabel>
               <CInput
                 id="nama"
                 type="date"
-                value={tanggal}
-                onChange={(e) => setTanggal(e.target.value)}
+                value={start}
+                onChange={(e) => setStart(e.target.value)}
+              />
+            </CFormGroup>
+          </CCol>
+        </CRow>
+        <CRow>
+          <CCol xs="12">
+            <CFormGroup>
+              <CLabel htmlFor="jabatan">Sampai</CLabel>
+              <CInput
+                id="nama"
+                type="date"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
               />
             </CFormGroup>
           </CCol>

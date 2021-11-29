@@ -6,6 +6,8 @@ const { uploadFile } = require("../utils/uploads");
 route.get("/check", UploadController.CheckUpload); // ?pegawai=1&pangkat=1
 route.get("/check-upload", UploadController.SudahDiUpload);
 
+route.post("/", uploadFile.single("file"), UploadController.UploadBerkas);
+
 route.post(
   "/sertifikasi/:id",
   uploadFile.single("sertifikasi"),

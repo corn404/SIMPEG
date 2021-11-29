@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import { getCuti, DeleteCuti } from "src/redux/actions/cuti";
 import { getPegawai } from "src/redux/actions/pegawai";
 import moment from "moment";
+import { naikPangkat, turunPangkat } from "src/redux/actions/pangkat";
 
 const Pangkat = () => {
   const dispatch = useDispatch();
@@ -41,9 +42,9 @@ const Pangkat = () => {
     },
   ];
 
-  const handleHapus = (item) => {
+  const handleTurun = (item) => {
     Swal.fire({
-      title: "yakin ingin menghapus data cuti ini ?",
+      title: "Turun pangkat ?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -51,8 +52,22 @@ const Pangkat = () => {
       confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(DeleteCuti(item.id, item.id_pegawai));
-        // console.log(item.);
+        dispatch(turunPangkat(item.id_pangkat, item.id));
+      }
+    });
+  };
+
+  const handleNaik = (item) => {
+    Swal.fire({
+      title: "Naik pangkat ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(naikPangkat(item.id_pangkat, item.id));
       }
     });
   };
@@ -114,14 +129,14 @@ const Pangkat = () => {
                       size="sm"
                       color="warning"
                       style={{ marginRight: 5 }}
-                      onClick={() => handleHapus(item)}
+                      onClick={() => handleTurun(item)}
                     >
                       <IoArrowDownOutline />
                     </CButton>
                     <CButton
                       size="sm"
                       color="success"
-                      onClick={() => handleHapus(item)}
+                      onClick={() => handleNaik(item)}
                     >
                       <IoArrowUpOutline />
                     </CButton>

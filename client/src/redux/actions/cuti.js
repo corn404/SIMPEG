@@ -15,12 +15,12 @@ export const getCuti = () => async (dispatch) => {
   }
 };
 
-export const AddCuti = (id, tanggal) => async (dispatch) => {
+export const AddCuti = (id, start, end) => async (dispatch) => {
   try {
     const add = await axios.post(`${BASE_URL}/cuti`, {
       id_pegawai: id,
-      mulai_cuti: moment(new Date()).format("YYYY-MM-DD"),
-      akhir_cuti: tanggal,
+      mulai_cuti: start,
+      akhir_cuti: end,
     });
     if (add.data.status === "Error") {
       messageError(add.data.data);

@@ -93,6 +93,43 @@ const DellMapPangkat = async (req, res, next) => {
   }
 };
 
+const NaikPangkat = async (req, res, next) => {
+  const { pangkat, pegawai } = req.query;
+  try {
+    const checkPangkat = await db(tableName.pangkat)
+      .select("*")
+      .limit(1)
+      .offset(pangkat);
+    if (checkPangkat.length < 0) {
+      return WebResponse(res, 201, "Error", "Anda Suda pada pangkat terakhir");
+    } else {
+      const data = await db(tableName.pegawai).where("id", pegawai).update({
+        id_pangkat: checkPangkat[0].id,
+      });
+
+      return WebResponse(res, 200, "Success", "Naik pangkat berhasil");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const TurunPangkat = async (req, res, next) => {
+  const { pangkat, pegawai } = req.query;
+  try {
+    if (pangkat == 1) {
+      return WebResponse(res, 201, "Error", "Pangkat anda sudah ter-rendah");
+    } else {
+      const data = await db(tableName.pegawai).where("id", pegawai).decrement({
+        id_pangkat: 1,
+      });
+      return WebResponse(res, 200, "Success", "Turun pangkat berhasil");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   GetPangkat,
   AddPangkat,
@@ -100,4 +137,6 @@ module.exports = {
   GetMapPangkat,
   AddMapPangkat,
   DellMapPangkat,
+  NaikPangkat,
+  TurunPangkat,
 };

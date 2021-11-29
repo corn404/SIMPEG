@@ -97,6 +97,7 @@ const ModalUpdate = ({ modal, setModal, item }) => {
     setPegawai(item.jenis_pegawai);
     setJabatan(item.id_jabatan);
     setTempLahir(item.tempat_lahir);
+    setNohp(item.no_hp);
     setTglLahir(moment(item.tgl_lahir).format("yyyy-MM-DD"));
     dispatch(getJabatan());
   }, [item]);

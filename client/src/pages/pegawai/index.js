@@ -36,6 +36,7 @@ const Pegawai = () => {
     { key: "pendidikan", label: "PENDIDIKAN" },
     { key: "jabatan", label: "JABATAN" },
     { key: "no_hp", label: "NO HP" },
+    { key: "jenis_pegawai", label: "STATUS PEGAWAI" },
     {
       key: "aksi",
       label: "AKSI",
@@ -119,6 +120,11 @@ const Pegawai = () => {
             scopedSlots={{
               no_hp: (item) => (
                 <>{item.no_hp ? <td>{item.no_hp}</td> : <td> </td>}</>
+              ),
+              jenis_pegawai: (item) => (
+                <>
+                  <td>{item.jenis_pegawai == 1 ? "TPA" : "DOSEN"}</td>
+                </>
               ),
               aksi: (item) => (
                 <td style={{ textAlign: "center" }}>

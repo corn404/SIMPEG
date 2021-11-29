@@ -1,5 +1,8 @@
-export const BASE_URL = "http://localhost:5000/api/v1";
-export const SOCKET_URL = "http://localhost:5000";
+// export const BASE_URL = "http://localhost:5001/api/v1";
+// export const SOCKET_URL = "http://localhost:5001";
+
+export const BASE_URL = "http://36.95.134.246:5001/api/v1";
+export const SOCKET_URL = "http://36.95.134.246:5001";
 
 export const USER_LOGIN = "USER_LOGIN";
 export const GET_USERS = "GET_USERS";

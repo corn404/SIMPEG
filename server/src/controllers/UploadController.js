@@ -72,16 +72,21 @@ const CheckUpload = async (req, res, next) => {
       .where(`${tableName.tampungUpload}.id_pegawai`, pegawai)
       .andWhere(`${tableName.mappingUpload}.id_pangkat`, pangkat);
 
+    console.log(dataUpload);
     if (dataUpload.length < 0) {
       return WebResponse(res, 200, "Belum Upload");
     }
 
     const dataMapping = await db(tableName.mappingUpload)
-      .select("*")
+      .select("id_pangkat")
       .where("id_pangkat", pangkat);
-
-    if (dataUpload.length >= dataMapping.length) {
-      return WebResponse(res, 200, "Belum Selesai");
+    console.log(dataMapping);
+    if (dataMapping.length <= dataUpload.length) {
+      if (dataMapping.length === 0) {
+        return WebResponse(res, 200, "Belum Upload");
+      } else {
+        return WebResponse(res, 200, "Selesai");
+      }
     } else {
       return WebResponse(res, 200, "Belum Upload");
     }
@@ -140,6 +145,23 @@ const SudahDiUpload = async (req, res, next) => {
   }
 };
 
+const UploadBerkas = async (req, res, next) => {
+  const { mapping, pegawai } = req.body;
+  try {
+    console.log(mapping, pegawai);
+
+    const data = await db(tableName.tampungUpload).insert({
+      id_mapping: mapping,
+      id_pegawai: pegawai,
+      nama_file: req.file.filename,
+    });
+
+    return WebResponse(res, 201, "OK", data);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   UploadSetifikasi,
   UploadRiwayatHidup,
@@ -147,4 +169,5 @@ module.exports = {
   DeleteSetifikasi,
   CheckUpload,
   SudahDiUpload,
+  UploadBerkas,
 };

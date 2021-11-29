@@ -156,14 +156,14 @@ const MappingPangkat = () => {
                   aksi: (item) => (
                     <>
                       <td style={{ textAlign: "center" }}>
-                        <CButton
+                        {/* <CButton
                           style={{ marginRight: 10 }}
                           size="sm"
                           color="danger"
                           onClick={() => handleHapus(item)}
                         >
                           <IoTrashOutline />
-                        </CButton>
+                        </CButton> */}
                         <CButton
                           size="sm"
                           color="success"

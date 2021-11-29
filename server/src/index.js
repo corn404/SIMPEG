@@ -19,7 +19,7 @@ const io = require("socket.io")(server, {
   },
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -55,7 +55,7 @@ app.use(errorHandler);
 
 server.listen(PORT, () => {
   const job = new CronJob(
-    "* * * * * *",
+    "* 59 * * * *",
     async () => {
       // console.log(
       //   parseInt(moment("2021-06-07T20:25:08.523Z").locale("id").format("HH"))
@@ -65,6 +65,10 @@ server.listen(PORT, () => {
         moment().locale("id").format("dddd") === "Sabtu" ||
         moment().locale("id").format("dddd") === "Minggu"
       ) {
+        // const getAbsen = await db(tableName.absensi).whereBetween(
+        //   db.raw("DATE(tgl_absen)"),
+        //   [tanggal, tanggal]
+        // );
         const pegawai = await db(tableName.pegawai);
         const pegawaiAdd = pegawai.map((x) => {
           return {
@@ -73,6 +77,7 @@ server.listen(PORT, () => {
             status: 3,
           };
         });
+
         await db(tableName.absensi).insert(pegawaiAdd);
       } else {
         const tanggal = moment().format("yyyy-MM-DD");

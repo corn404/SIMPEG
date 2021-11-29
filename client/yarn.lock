@@ -9945,6 +9945,11 @@ react-shallow-renderer@^16.13.1:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0"
 
+react-table@^7.7.0:
+  version "7.7.0"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.7.0.tgz#e2ce14d7fe3a559f7444e9ecfe8231ea8373f912"
+  integrity sha512-jBlj70iBwOTvvImsU9t01LjFjy4sXEtclBovl3mTiqjz23Reu0DKnRza4zlLtOPACx6j2/7MrQIthIK1Wi+LIA==
+
 react-test-renderer@^17.0.0:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-17.0.2.tgz#4cd4ae5ef1ad5670fc0ef776e8cc7e1231d9866c"
@@ -9954,6 +9959,13 @@ react-test-renderer@^17.0.0:
     react-is "^17.0.2"
     react-shallow-renderer "^16.13.1"
     scheduler "^0.20.2"
+
+react-to-print@^2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.14.1.tgz#b6c74e9ed37520092a0863386ceb9b5525065941"
+  integrity sha512-2PWKhONAYHpWELAiclcGbyN3xG0Li37hnMVdNtSwGyOT3O6BpB+GiqaT4pqnvuDTPFTZdfjL4fmvY6HxcdQ6sw==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-transition-group@^4.3.0:
   version "4.4.2"

@@ -27,10 +27,10 @@ const filterFile = (req, file, done) => {
 const uploadFile = multer({
   //   dest: "src/public/uploads/",
   storage: storageFile,
-  limits: {
-    fileSize: 1024 * 1024 * 10,
-  },
-  fileFilter: filterFile,
+  // limits: {
+  //   fileSize: 1024 * 1024 * 10,
+  // },
+  // fileFilter: filterFile,
 });
 
 module.exports = {
