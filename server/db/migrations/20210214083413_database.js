@@ -53,7 +53,7 @@ exports.up = async (knex) => {
         .integer("status")
         .defaultTo(1)
         .notNullable()
-        .comment("1=hadir, 2=tidak hadir, 3=libur");
+        .comment("0=cuti, 1=hadir, 2=tidak hadir, 3=libur");
     })
     .createTable(tableName.jabatan, (table) => {
       table.increments("id").primary().unique().notNullable();

@@ -1,7 +1,8 @@
-import { GET_ABSENSI } from "../actions";
+import { GET_ABSENSI, GET_ABSENSI_ALL } from "../actions";
 
 const intialState = {
   data: [],
+  rekapAll: [],
 };
 
 const Absensi = (state = intialState, action) => {
@@ -10,6 +11,13 @@ const Absensi = (state = intialState, action) => {
       return {
         ...state,
         data: action.data,
+      };
+    }
+
+    case GET_ABSENSI_ALL: {
+      return {
+        ...state,
+        rekapAll: action.data,
       };
     }
     default:

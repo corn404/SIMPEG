@@ -8,14 +8,20 @@ import {
   CCol,
   CDataTable,
   CBadge,
+  CFormGroup,
+  CLabel,
+  CInput,
 } from "@coreui/react";
 import { IoEye, IoFolderOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
-import { getAbsensi } from "src/redux/actions/absensi";
+import moment from "moment";
+import { getAbsensi, rekapAllAbsensi } from "src/redux/actions/absensi";
 import ModalInfo from "./ModalInfo";
 import { cibElasticStack, cibLetsEncrypt } from "@coreui/icons";
 import { Cetak1 } from "./Cetak1";
+import { Cetak2 } from "./Cetak2";
+import ModalPriode from "./ModalPriode";
 
 const Absensi = () => {
   const dispatch = useDispatch();
@@ -24,9 +30,14 @@ const Absensi = () => {
   const [item, setItem] = useState(null);
   const [bulan, setBulan] = useState("");
 
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+
   const [selectPegawai, setSelectPegawai] = useState(null);
+  const [restData, setRestData] = useState(null);
 
   const cetak1Ref = useRef();
+  const cetak2Ref = useRef();
 
   const columns = [
     { key: "no", label: "NO", _style: { width: "50px", textAlign: "center" } },
@@ -48,119 +59,38 @@ const Absensi = () => {
     },
   ];
 
-  const handleOpenModal = async (bulan, item) => {
-    await setBulan(bulan);
+  const handleOpenModal = async (item) => {
     await setItem(item);
-    await setModal(true);
+    await setModal(!modal);
   };
 
   const handlePrint = useReactToPrint({
-    content: () => cetak1Ref.current,
+    content: () => cetak2Ref.current,
   });
 
-  const handleCetak = async (item) => {
-    const tanggalArr = [];
-    let start = new Date("11-1-2021").getDate();
-    let end = new Date().getDate();
-
-    for (let i = start; i <= end; i++) {
-      let tanggal = new Date(`11-${i}-2021`).getDay();
-      let tanggal2 = new Date(`11-${i}-2021`).getDate();
-      let hari = "";
-      if (tanggal == 1) {
-        hari = "SN";
-      }
-
-      if (tanggal == 2) {
-        hari = "SL";
-      }
-
-      if (tanggal == 3) {
-        hari = "RB";
-      }
-
-      if (tanggal == 4) {
-        hari = "KM";
-      }
-
-      if (tanggal == 5) {
-        hari = "JM";
-      }
-
-      if (tanggal == 6) {
-        hari = "SB";
-      }
-
-      if (tanggal == 0) {
-        hari = "M";
-      }
-
-      tanggalArr.push({
-        hari: hari,
-        tanggal: tanggal2,
-        libur: tanggal == 0 ? true : false,
-      });
-    }
-    await setSelectPegawai({ ...item, dataArr: tanggalArr });
-
-    await handlePrint();
-  };
-
-  // const handleBulanClick = (nama, item) => {
-  //   switch (nama) {
-  //     case "januari": {
-  //       return handleOpenModal("01", item);
-  //     }
-
-  //     case "februari": {
-  //       return handleOpenModal("02", item);
-  //     }
-
-  //     case "maret": {
-  //       return handleOpenModal("03", item);
-  //     }
-
-  //     case "april": {
-  //       return handleOpenModal("04", item);
-  //     }
-
-  //     case "mei": {
-  //       return handleOpenModal("05", item);
-  //     }
-
-  //     case "juni": {
-  //       return handleOpenModal("06", item);
-  //     }
-
-  //     case "juli": {
-  //       return handleOpenModal("07", item);
-  //     }
-
-  //     case "agustus": {
-  //       return handleOpenModal("08", item);
-  //     }
-
-  //     case "september": {
-  //       return handleOpenModal("09", item);
-  //     }
-
-  //     case "oktober": {
-  //       return handleOpenModal("10", item);
-  //     }
-
-  //     case "november": {
-  //       return handleOpenModal("11", item);
-  //     }
-  //     case "desember": {
-  //       return handleOpenModal("12", item);
-  //     }
-
-  //     default:
-  //       break;
-  //   }
+  // const handleCetak = async (item) => {
+  //   await handlePrint();
   // };
 
+  // const handleOpenModal = async (i) => {
+  //   await setItem(item);
+  //   await setModal(!modal);
+  // };
+
+  const handleLihat = () => {
+    dispatch(
+      rekapAllAbsensi({ start, end }, async (err, rest) => {
+        if (!err) {
+          await setRestData(rest);
+          await handlePrint();
+        }
+      })
+    );
+  };
+
   useEffect(() => {
+    setStart(moment(new Date()).format("yyyy-MM-DD"));
+    setEnd(moment(new Date()).format("yyyy-MM-DD"));
     dispatch(getAbsensi());
   }, []);
 
@@ -177,6 +107,37 @@ const Absensi = () => {
           </CRow>
         </CCardHeader>
         <CCardBody>
+          <CRow>
+            <CCol sm="2">
+              Periode
+              <CInput
+                type="date"
+                value={start}
+                onChange={(e) => setStart(e.target.value)}
+              />
+            </CCol>
+            <CCol sm="2">
+              S/D
+              <CInput
+                type="date"
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}
+              />
+            </CCol>
+            <CCol sm="2" style={{ display: "flex", alignItems: "center" }}>
+              <CButton
+                size="sm"
+                color="success"
+                onClick={() => handleLihat()}
+                style={{
+                  height: 35,
+                  marginBottom: -15,
+                }}
+              >
+                Lihat
+              </CButton>
+            </CCol>
+          </CRow>
           <CDataTable
             items={dataAbsen}
             fields={columns}
@@ -193,7 +154,7 @@ const Absensi = () => {
                     <CButton
                       size="sm"
                       color="success"
-                      onClick={() => handleCetak(item)}
+                      onClick={() => handleOpenModal(item)}
                     >
                       <IoFolderOutline />
                     </CButton>
@@ -204,17 +165,25 @@ const Absensi = () => {
           />
         </CCardBody>
       </CCard>
-      {item && (
+      {/* {item && (
         <ModalInfo
           modal={modal}
           setModal={setModal}
           item={item}
           bulan={bulan}
         />
-      )}
+      )} */}
+
+      <ModalPriode modal={modal} setModal={setModal} data={item} />
 
       <div style={{ display: "none" }}>
-        <Cetak1 ref={cetak1Ref} data={selectPegawai && selectPegawai} />
+        {/* <Cetak1 ref={cetak1Ref} data={selectPegawai && selectPegawai} /> */}
+        <Cetak2
+          ref={cetak2Ref}
+          data={restData && restData}
+          start={start}
+          end={end}
+        />
       </div>
     </>
   );

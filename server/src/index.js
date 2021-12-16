@@ -69,16 +69,40 @@ server.listen(PORT, () => {
         //   db.raw("DATE(tgl_absen)"),
         //   [tanggal, tanggal]
         // );
-        const pegawai = await db(tableName.pegawai);
-        const pegawaiAdd = pegawai.map((x) => {
-          return {
-            id_pegawai: x.id,
-            tgl_absen: moment().format("yyyy-MM-DD HH:mm:ss"),
-            status: 3,
-          };
+        // const pegawai = await db(tableName.pegawai);
+        // const pegawaiAdd = pegawai.map((x) => {
+        //   return {
+        //     id_pegawai: x.id,
+        //     tgl_absen: moment().format("yyyy-MM-DD HH:mm:ss"),
+        //     status: 3,
+        //   };
+        // });
+
+        await db.transaction((trx) => {
+          trx(tableName.pegawai)
+            .then((pg) => {
+              pg.map((x) => {
+                trx(tableName.absensi)
+                  .where("id", x.id)
+                  .andWhere("tgl_absen", moment().format("yyyy-MM-DD HH:mm:ss"))
+                  .then((d) => {
+                    if (d.length < 0) {
+                      db(tableName.absensi)
+                        .insert({
+                          id_pegawai: x.id,
+                          tgl_absen: moment().format("yyyy-MM-DD HH:mm:ss"),
+                          status: 3,
+                        })
+                        .transacting(trx);
+                    }
+                  });
+              });
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
         });
 
-        await db(tableName.absensi).insert(pegawaiAdd);
+        // await db(tableName.absensi).insert(pegawaiAdd);
       } else {
         const tanggal = moment().format("yyyy-MM-DD");
         var dataArr = [];

@@ -5,7 +5,9 @@ route.get("/", AbsensiController.GetAbsensi);
 route.get("/rekap", AbsensiController.GetAbsensiByMonth);
 route.get("/scan", AbsensiController.ScanAbsensi);
 route.get("/scan-verify/:id", AbsensiController.ScanVerify);
-route.get("/pegawai", AbsensiController.GetAbsensiByPegawai);
+// route.get("/pegawai", AbsensiController.GetAbsensiByPegawai);
 route.post("/:id_pegawai", AbsensiController.CreateAbensi);
+route.get("/all", AbsensiController.GetAllAbsensi);
+route.get("/pegawai", AbsensiController.GetAllAbsensiByPegawai);
 
 module.exports = route;

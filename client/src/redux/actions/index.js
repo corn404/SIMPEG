@@ -10,6 +10,7 @@ export const USER_LOGOUT = "USER_LOGOUT";
 export const SET_SIDEBAR = "SET_SIDEBAR";
 
 export const GET_ABSENSI = "GET_ABSENSI";
+export const GET_ABSENSI_ALL = "GET_ABSENSI_ALL";
 
 // pegawai
 export const GET_PEGAWAI = "GET_PEGAWAI";

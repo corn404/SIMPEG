@@ -1,13 +1,8 @@
 import React, { useEffect } from "react";
 
-export class Cetak1 extends React.PureComponent {
+export class Cetak2 extends React.PureComponent {
   render() {
-    const { data, start, end, item } = this.props;
-
-    const cuti = item.filter((x) => x.status === 0);
-    const hadir = item.filter((x) => x.status === 1);
-    const absen = item.filter((x) => x.status === 2);
-    const libur = item.filter((x) => x.status === 3);
+    const { data, start, end } = this.props;
 
     return (
       <div>
@@ -42,14 +37,24 @@ export class Cetak1 extends React.PureComponent {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>{data.nidn}</td>
-              <td>{data.nama}</td>
-              <td style={{ textAlign: "center" }}>{hadir.length}</td>
-              <td style={{ textAlign: "center" }}>{cuti.length}</td>
-              <td style={{ textAlign: "center" }}>{absen.length}</td>
-            </tr>
+            {data &&
+              data.map((items, i) => {
+                const cuti = items.absensi.filter((x) => x.status === 0);
+                const hadir = items.absensi.filter((x) => x.status === 1);
+                const absen = items.absensi.filter((x) => x.status === 2);
+                const libur = items.absensi.filter((x) => x.status === 3);
+                console.log(cuti);
+                return (
+                  <tr>
+                    <th scope="row">{i + 1}</th>
+                    <td>{items.nidn}</td>
+                    <td>{items.nama}</td>
+                    <td style={{ textAlign: "center" }}>{hadir.length}</td>
+                    <td style={{ textAlign: "center" }}>{cuti.length}</td>
+                    <td style={{ textAlign: "center" }}>{absen.length}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>
