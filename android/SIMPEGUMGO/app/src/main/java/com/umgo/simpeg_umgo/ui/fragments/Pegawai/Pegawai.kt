@@ -11,13 +11,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.umgo.simpeg_umgo.MainActivity
 import com.umgo.simpeg_umgo.R
+import com.umgo.simpeg_umgo.data.adapter.BerkasAdapter
 import com.umgo.simpeg_umgo.data.model.absen.AbsenResponse
+import com.umgo.simpeg_umgo.data.model.upload.BerkasResponse
+import com.umgo.simpeg_umgo.data.model.upload.UploadReq
 import com.umgo.simpeg_umgo.data.service.API
+import com.umgo.simpeg_umgo.data.utils.ItemClickListener
 import com.umgo.simpeg_umgo.data.utils.SharedUsers
 import com.umgo.simpeg_umgo.data.utils.UploadRequestBody
 import com.umgo.simpeg_umgo.databinding.FragmentPegawaiBinding
@@ -32,14 +34,17 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
-class Pegawai : Fragment(), UploadRequestBody.UploadCallback  {
+class Pegawai : Fragment(), UploadRequestBody.UploadCallback, ItemClickListener {
     private var _binding: FragmentPegawaiBinding? = null
     private val binding get() = _binding
     private lateinit var sharedUsers: SharedUsers
     private lateinit var loading: Dialog
 
-    private val REQUEST_RIWAYAT = 10
-    private val REQUEST_SERTIVIKASI = 11
+    private val REQUEST_FILE = 10
+    private var ID_BERKAS = 0
+
+
+    private lateinit var berkasAdapter: BerkasAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -48,6 +53,7 @@ class Pegawai : Fragment(), UploadRequestBody.UploadCallback  {
     ): View? {
         _binding = FragmentPegawaiBinding.inflate(layoutInflater, container, false)
         sharedUsers = SharedUsers(requireContext())
+        berkasAdapter = BerkasAdapter(mutableListOf(), requireContext(), sharedUsers, this)
         loading = Dialog(requireContext())
         loading.setContentView(R.layout.loading)
         loading.window?.setBackgroundDrawable(context?.getDrawable(R.drawable.background_modal))
@@ -64,150 +70,54 @@ class Pegawai : Fragment(), UploadRequestBody.UploadCallback  {
         binding?.textPendidikan?.text = "Pendidikan : ${sharedUsers.pendidikan}"
         binding?.textPangkat?.text = "Pangkat : ${sharedUsers.pangkat}"
 
-        sharedUsers.let {
-            if(it.file_riwayat.isNullOrEmpty()) {
-                binding?.containerBerkas1?.visibility = View.VISIBLE
-                binding?.containerUpload1?.visibility = View.GONE
-            } else {
-                binding?.containerBerkas1?.visibility = View.GONE
-                binding?.containerUpload1?.visibility = View.VISIBLE
-            }
-
-            if(it.file_verifikasi.isNullOrEmpty()) {
-                binding?.containerBerkas2?.visibility = View.VISIBLE
-                binding?.containerUpload2?.visibility = View.GONE
-            } else {
-                binding?.containerBerkas2?.visibility = View.GONE
-                binding?.containerUpload2?.visibility = View.VISIBLE
-            }
+        binding?.rvBerkas?.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = berkasAdapter
         }
 
-        binding?.etRiwayatHidup?.setOnClickListener {
-            openFile(REQUEST_RIWAYAT)
-        }
+       checkUpload()
 
-
-        binding?.etSertifikasi?.setOnClickListener {
-            openFile(REQUEST_SERTIVIKASI)
-        }
-
-
-        binding?.btnRiwayat?.setOnClickListener {
-            openFile(REQUEST_RIWAYAT)
-        }
-
-
-        binding?.btnSertifikasi?.setOnClickListener {
-            openFile(REQUEST_SERTIVIKASI)
-        }
-
-        binding?.btnHapusRiwayat?.setOnClickListener {
-            deleteRiwayat()
-        }
-
-        binding?.btnHapusVerifikasi?.setOnClickListener {
-            deleteSertifikasi()
+        binding!!.imageView2.setOnClickListener {
+            openBerkas()
         }
 
         return binding?.root
     }
 
-    private fun deleteRiwayat() {
-        loading.show()
-        API().deleteRiwayat(sharedUsers.id_pegawai!!.toInt()).enqueue(object : Callback<AbsenResponse> {
-            override fun onResponse(call: Call<AbsenResponse>, response: Response<AbsenResponse>) {
-                if(response.isSuccessful) {
-                    Toast.makeText(requireContext(), "Success!", Toast.LENGTH_SHORT).show()
-                    loading.dismiss()
-                    binding?.containerBerkas1?.visibility = View.VISIBLE
-                    binding?.containerUpload1?.visibility = View.GONE
-                    sharedUsers.file_riwayat = ""
-                }
-            }
-
-            override fun onFailure(call: Call<AbsenResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), "File gagal di hapus, silahkan hubungi admin", Toast.LENGTH_SHORT).show()
-                loading.dismiss()
-            }
-
-        })
-    }
-
-    private fun deleteSertifikasi() {
-        loading.show()
-        API().deleteSertifikasi(sharedUsers.id_pegawai!!.toInt()).enqueue(object : Callback<AbsenResponse> {
-            override fun onResponse(call: Call<AbsenResponse>, response: Response<AbsenResponse>) {
-                if(response.isSuccessful) {
-                    Toast.makeText(requireContext(), "Success!", Toast.LENGTH_SHORT).show()
-                    loading.dismiss()
-                    binding?.containerBerkas2?.visibility = View.VISIBLE
-                    binding?.containerUpload2?.visibility = View.GONE
-                    sharedUsers.file_verifikasi = ""
-                }
-            }
-
-            override fun onFailure(call: Call<AbsenResponse>, t: Throwable) {
-                Toast.makeText(requireContext(), "File gagal di hapus, silahkan hubungi admin", Toast.LENGTH_SHORT).show()
-                loading.dismiss()
-            }
-
-        })
-    }
 
 
-    private fun openFile(request: Int) {
+    fun openBerkas() {
         Intent(Intent.ACTION_GET_CONTENT).also {
             it.type = "application/*"
             val mimeTypes = arrayOf("application/pdf")
             it.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
-            startActivityForResult(Intent.createChooser(it, "Cari File"), request)
+            startActivityForResult(Intent.createChooser(it, "Cari File"), REQUEST_FILE)
         }
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REQUEST_RIWAYAT -> {
-                uploadFile(resultCode, data?.data!!, 1)
-            }
-
-            REQUEST_SERTIVIKASI -> {
-                uploadFile(resultCode, data?.data!!, 2)
-            }
+        if(requestCode == REQUEST_FILE) {
+            uploadFile(resultCode, data?.data!!)
         }
-
     }
 
 
-    private fun uploadFile(resultCode: Int, uri: Uri, code: Int) {
+    private fun uploadFile(resultCode: Int, uri: Uri) {
         var filename = ""
         if (resultCode == Activity.RESULT_OK) {
             val cursor = context?.contentResolver?.query(uri, null, null, null, null)
             val nameIndex = cursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             cursor?.moveToFirst()
             filename = nameIndex?.let { it1 -> cursor.getString(it1) }.toString()
-
-            when (code) {
-                1 -> {
-                    uploadRiwayat(uri, filename)
-                    binding?.etRiwayatHidup?.setText(filename)
-                }
-
-                2 -> {
-                    uploadSertifikasi(uri, filename)
-                    binding?.etSertifikasi?.setText(filename)
-                }
-            }
-        }
-
-        if (resultCode == Activity.RESULT_CANCELED) {
-            Toast.makeText(requireContext(), "Batal Cari File", Toast.LENGTH_SHORT).show()
+            uploadBerkas(uri, filename)
         }
     }
 
 
-    private fun uploadSertifikasi(fileUri: Uri, filename: String) {
+
+
+    private fun uploadBerkas(fileUri: Uri, filename: String) {
         loading.show()
         val parcelFileDescriptor =
             context?.contentResolver?.openFileDescriptor(fileUri!!, "r", null) ?: return
@@ -221,80 +131,54 @@ class Pegawai : Fragment(), UploadRequestBody.UploadCallback  {
             file
         )
 
-        API().uploadSertifikasi(
-            sharedUsers.id_pegawai!!.toInt(),
-            MultipartBody.Part.createFormData("sertifikasi", filename, requestFile)
+        val map: HashMap<String, RequestBody> = HashMap()
+        map["mapping"] = createPartFromString(ID_BERKAS.toString())
+        map["pegawai"] = createPartFromString(sharedUsers.id_pegawai.toString())
+
+
+        API().uploadBerkas(
+            map,
+            MultipartBody.Part.createFormData("file", filename, requestFile)
         ).enqueue(object : Callback<AbsenResponse> {
-            override fun onResponse(
-                call: Call<AbsenResponse>,
-                response: Response<AbsenResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "Upload success", Toast.LENGTH_SHORT).show()
-                    sharedUsers.file_verifikasi = response.body()?.data
-                    binding?.containerBerkas2?.visibility = View.GONE
-                    binding?.containerUpload2?.visibility = View.VISIBLE
+            override fun onResponse(call: Call<AbsenResponse>, response: Response<AbsenResponse>) {
+                println("UPLOAD =============+>>>")
+                if(response.isSuccessful) {
                     loading.dismiss()
+
+                    checkUpload()
                 }
             }
 
             override fun onFailure(call: Call<AbsenResponse>, t: Throwable) {
-                Toast.makeText(
-                    requireContext(),
-                    "Upload Gagal! silahkan hubungi admin",
-                    Toast.LENGTH_SHORT
-                ).show()
                 loading.dismiss()
-            }
 
-        })
-    }
-
-    private fun uploadRiwayat(fileUri: Uri, filename: String) {
-        loading.show()
-        val parcelFileDescriptor =
-            context?.contentResolver?.openFileDescriptor(fileUri!!, "r", null) ?: return
-
-        val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-        val file = File((context as MainActivity).cacheDir, filename)
-        val outputStream = FileOutputStream(file)
-        inputStream.copyTo(outputStream)
-        val requestFile = RequestBody.create(
-            context?.contentResolver?.getType(fileUri!!).toString().toMediaTypeOrNull(),
-            file
-        )
-
-        API().uploadRiwayat(
-            sharedUsers.id_pegawai!!.toInt(),
-            MultipartBody.Part.createFormData("sertifikasi", filename, requestFile)
-        ).enqueue(object : Callback<AbsenResponse> {
-            override fun onResponse(
-                call: Call<AbsenResponse>,
-                response: Response<AbsenResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "Upload success", Toast.LENGTH_SHORT).show()
-                    sharedUsers.file_riwayat = response.body()?.data
-                    binding?.containerBerkas1?.visibility = View.GONE
-                    binding?.containerUpload1?.visibility = View.VISIBLE
-                    loading.dismiss()
-                }
-            }
-
-            override fun onFailure(call: Call<AbsenResponse>, t: Throwable) {
-                Toast.makeText(
-                    requireContext(),
-                    "Upload Gagal! silahkan hubungi admin",
-                    Toast.LENGTH_SHORT
-                ).show()
-                loading.dismiss()
+                println("GAGAL UPLOAD +==============+>>>")
+                checkUpload()
             }
 
         })
     }
 
 
+    fun checkUpload() {
+        API().checkUploadBerkas(sharedUsers.id_pegawai.toString().toInt(), sharedUsers.id_pangkat.toString().toInt()).enqueue(object : Callback<BerkasResponse> {
+            override fun onResponse(
+                call: Call<BerkasResponse>,
+                response: Response<BerkasResponse>
+            ) {
+                if(response.isSuccessful) {
+                    binding?.rvBerkas?.adapter.let { a ->
+                        if(a is BerkasAdapter) {
+                            a.updateList(response.body()!!.data)
+                        }
+                    }
+                }
+            }
 
+            override fun onFailure(call: Call<BerkasResponse>, t: Throwable) {}
+
+        })
+    }
 
     override fun onDestroy() {
         _binding = null
@@ -303,5 +187,14 @@ class Pegawai : Fragment(), UploadRequestBody.UploadCallback  {
 
     override fun onProgressUpdate(percentage: Int) {
         println(percentage)
+    }
+
+    override fun onClick(id: Int) {
+        ID_BERKAS = id
+        openBerkas()
+    }
+
+    private fun createPartFromString(param: String): RequestBody {
+        return RequestBody.create("multipart/form-data".toMediaTypeOrNull(), param)
     }
 }

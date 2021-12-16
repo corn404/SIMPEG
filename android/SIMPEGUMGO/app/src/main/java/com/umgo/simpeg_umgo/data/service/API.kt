@@ -7,7 +7,11 @@ import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.model.login.LoginResponse
 import com.umgo.simpeg_umgo.data.model.login.UpdatePasswordRequest
 import com.umgo.simpeg_umgo.data.model.login.UpdatePasswordResponse
+import com.umgo.simpeg_umgo.data.model.upload.Berkas
+import com.umgo.simpeg_umgo.data.model.upload.BerkasResponse
+import com.umgo.simpeg_umgo.data.model.upload.UploadReq
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -47,9 +51,18 @@ interface API {
     @GET("upload/check")
     fun checkUpload(@Query("pegawai") pegawai: Int, @Query("pangkat") pangkat: Int): Call<CheckResponse>
 
+    @GET("upload/check-upload")
+    fun checkUploadBerkas(@Query("pegawai") pegawai: Int, @Query("pangkat") pangkat: Int): Call<BerkasResponse>
+
+    @Multipart
+    @POST("upload")
+    fun uploadBerkas(
+        @PartMap map: HashMap<String, RequestBody>,
+        @Part file: MultipartBody.Part): Call<AbsenResponse>
+
     companion object {
-        val BASE_URL = "http://192.168.43.217:5000/api/v1/"
-        val URL_SOCKETS = "http://192.168.43.217:5000"
+        val BASE_URL = "http://36.95.134.246:5001/api/v1/"
+        val URL_SOCKETS = "http://36.95.134.246:5001"
         operator fun invoke(): API {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

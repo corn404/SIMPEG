@@ -113,167 +113,19 @@ tools:context=".ui.fragments.Pegawai.Pegawai">
 
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_berkas_1"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:ignore="MissingConstraints">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/et_riwayat_hidup"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_berkas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_input"
-                android:hint="Berkas riwayat hidup ..."
-                android:padding="16dp"
-                android:textSize="12sp"
-                android:enabled="false"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:id="@+id/btn_riwayat"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_pdf"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/et_riwayat_hidup"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_berkas_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:ignore="MissingConstraints">
-
-            <EditText
-                android:id="@+id/et_sertifikasi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_input"
-                android:hint="Berkas Sertifikasi ..."
-                android:padding="16dp"
-                android:textSize="12sp"
-                android:enabled="false"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:id="@+id/btn_sertifikasi"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_pdf"
-                android:clickable="true"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/et_sertifikasi"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_upload1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:ignore="MissingConstraints">
+                android:layout_height="match_parent"
+                tools:ignore="ScrollViewSize"
+                tools:listitem="@layout/berkas_items"/>
 
 
-            <ImageView
-                android:id="@+id/et_checklist"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_tick"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/poppins"
-                android:text="File fiwayat hidup"
-                app:layout_constraintStart_toEndOf="@+id/et_checklist" />
-
-            <ImageView
-                android:id="@+id/btn_hapus_riwayat"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_twotone_delete_forever_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_upload2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:ignore="MissingConstraints">
-
-
-            <ImageView
-                android:id="@+id/et_checklist2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_tick"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/poppins"
-                android:text="File Sertifikasi"
-                app:layout_constraintStart_toEndOf="@+id/et_checklist2" />
-
-            <ImageView
-                android:id="@+id/btn_hapus_verifikasi"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_twotone_delete_forever_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
 
     </LinearLayout>

@@ -18,6 +18,7 @@ class SharedUsers(val context: Context) {
         private const val FILE_VERIFIKASI = "FILE_VERIFIKASI"
         private const val ID_PANGKAT = "ID_PANGKAT"
         private const val PANGKAT = "PANGKAT"
+        private const val ID_MAPPING = "ID_MAPPING"
     }
 
     private val data = PreferenceManager.getDefaultSharedPreferences(context)
@@ -59,4 +60,7 @@ class SharedUsers(val context: Context) {
         set(value) = data.edit().putString(ID_PANGKAT, value).apply()
     var pangkat = data.getString(PANGKAT, "")
         set(value) = data.edit().putString(PANGKAT, value).apply()
+
+    var idMapping = data.getInt(ID_MAPPING, 0)
+        set(value) = data.edit().putInt(ID_MAPPING, value).apply()
 }
