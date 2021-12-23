@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">SIMPEG-UMGO</string>
+    <string name="app_name">ABSENSI-UMGO</string>
 
-    <string name="text_splash">SISTEM INFORMASI MANAJEMEN KEPEGAWAIAN</string>
+    <string name="text_splash">SISTEM ABSENSI KEPEGAWAIAN</string>
     <string name="text_splash2">UNIVERSITAS MUHAMMADIYAH GORONTALO</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

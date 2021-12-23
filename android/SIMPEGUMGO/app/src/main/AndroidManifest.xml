@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="SIMPEG UMGO"
+            android:label="ABSENSI UMGO"
             android:theme="@style/Theme.SIMPEGUMGO.NoActionBar" />
 
         <meta-data

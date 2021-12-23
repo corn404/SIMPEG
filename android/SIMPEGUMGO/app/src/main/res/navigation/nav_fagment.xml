@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment2"
         android:name="com.umgo.simpeg_umgo.ui.fragments.Home.HomeFragment"
-        android:label="SIMPEG"
+        android:label="ABSENSI"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment2_to_profilFragment2"

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import com.umgo.simpeg_umgo.MainActivity
 import com.umgo.simpeg_umgo.R
 import com.umgo.simpeg_umgo.data.utils.SharedUsers
@@ -25,7 +26,7 @@ class SplashScreen : AppCompatActivity() {
             i = Intent(this@SplashScreen, Login::class.java)
         }
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             finish()
             startActivity(i)
         }, 4000)

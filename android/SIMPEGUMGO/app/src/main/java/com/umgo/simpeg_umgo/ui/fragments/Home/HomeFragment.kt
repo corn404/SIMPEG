@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -123,7 +124,7 @@ class HomeFragment : Fragment() {
             if(it.isNotEmpty()) {
                 absensiViewModel.loadingOff()
                 Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     absensiViewModel.clearMessage()
                 }, 2000)
             }

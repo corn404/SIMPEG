@@ -74,7 +74,7 @@ const CheckUpload = async (req, res, next) => {
 
     console.log(dataUpload);
     if (dataUpload.length < 0) {
-      return WebResponse(res, 200, "Belum Upload");
+      return WebResponse(res, 200, "Belum Uploads");
     }
 
     const dataMapping = await db(tableName.mappingUpload)
@@ -83,7 +83,7 @@ const CheckUpload = async (req, res, next) => {
     console.log(dataMapping);
     if (dataMapping.length <= dataUpload.length) {
       if (dataMapping.length === 0) {
-        return WebResponse(res, 200, "Belum Upload");
+        return WebResponse(res, 200, "Belum Uploads");
       } else {
         return WebResponse(res, 200, "Selesai");
       }

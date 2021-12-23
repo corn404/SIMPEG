@@ -63,6 +63,9 @@ interface API {
     companion object {
         val BASE_URL = "http://36.95.134.246:5001/api/v1/"
         val URL_SOCKETS = "http://36.95.134.246:5001"
+
+//        val BASE_URL = "http://192.168.43.217:5001/api/v1/"
+//        val URL_SOCKETS = "http://192.168.43.217:5001"
         operator fun invoke(): API {
             return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

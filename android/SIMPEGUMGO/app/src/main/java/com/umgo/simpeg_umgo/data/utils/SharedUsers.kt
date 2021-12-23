@@ -19,6 +19,7 @@ class SharedUsers(val context: Context) {
         private const val ID_PANGKAT = "ID_PANGKAT"
         private const val PANGKAT = "PANGKAT"
         private const val ID_MAPPING = "ID_MAPPING"
+        private const val ID_LOGIN = "ID_LOGIN"
     }
 
     private val data = PreferenceManager.getDefaultSharedPreferences(context)
@@ -63,4 +64,7 @@ class SharedUsers(val context: Context) {
 
     var idMapping = data.getInt(ID_MAPPING, 0)
         set(value) = data.edit().putInt(ID_MAPPING, value).apply()
+
+    var idLogin = data.getString(ID_LOGIN, "")
+        set(value) = data.edit().putString(ID_LOGIN, value).apply()
 }

@@ -14,11 +14,14 @@
         <entry key="app/src/main/res/drawable/ic_twotone_delete_forever_24.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/drawable/ic_user__2_.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.35989583333333336" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.33" />
         <entry key="app/src/main/res/layout/berkas_items.xml" value="0.35989583333333336" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/fragment_pegawai.xml" value="0.35989583333333336" />
         <entry key="app/src/main/res/layout/fragment_profil.xml" value="0.35989583333333336" />
         <entry key="app/src/main/res/layout/modal_info_upload.xml" value="0.35989583333333336" />
         <entry key="app/src/main/res/layout/rekap_items.xml" value="0.35989583333333336" />
+        <entry key="app/src/main/res/menu/drawer_menu.xml" value="0.3614583333333333" />
       </map>
     </option>
   </component>

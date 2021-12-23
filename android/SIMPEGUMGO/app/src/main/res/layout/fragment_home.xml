@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sistem Informasi Kepegawaian \n UM Gorontalo"
+            android:text="Sistem Absensi Kepegawaian \n UM Gorontalo"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"

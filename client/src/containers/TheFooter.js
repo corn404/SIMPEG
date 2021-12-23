@@ -6,7 +6,7 @@ const TheFooter = () => {
     <CFooter fixed={false}>
       <div>
         <a href="/#" target="_blank" rel="noopener noreferrer">
-          SIMPEG-UMGO
+          ABSENSI-UMGO
         </a>
         <span className="ml-1">&copy; 2021</span>
       </div>

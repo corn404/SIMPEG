@@ -5,8 +5,10 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.telephony.TelephonyManager
 import android.view.ViewGroup
 import android.widget.EditText
@@ -22,6 +24,7 @@ import com.umgo.simpeg_umgo.R
 import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.utils.SharedUsers
 import com.umgo.simpeg_umgo.data.viewmodel.AuthViewModel
+import java.util.*
 
 class Login : AppCompatActivity() {
     private lateinit var et_nip: EditText
@@ -55,18 +58,25 @@ class Login : AppCompatActivity() {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         loading.setCancelable(false)
+//
+//        val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as
+//                TelephonyManager
+//        if (ActivityCompat.checkSelfPermission(this@Login,
+//                android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this@Login,
+//                arrayOf(android.Manifest.permission.READ_PHONE_STATE), REQUEST_PERMISSION)
+//            return
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            IMEI = telephonyManager.meid
+//        } else {
+//            IMEI = telephonyManager.deviceId
+//        }
 
-        val telephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as
-                TelephonyManager
-        if (ActivityCompat.checkSelfPermission(this@Login,
-                android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this@Login,
-                arrayOf(android.Manifest.permission.READ_PHONE_STATE), REQUEST_PERMISSION)
-            return
-        }
-        IMEI = telephonyManager.deviceId
+
 
         btn_login.setOnClickListener {
+            IMEI = UUID.randomUUID().toString()
             loading.show()
             if (et_nip.text.trim().isEmpty() && et_password.text.trim().isEmpty()) {
                 Toast.makeText(
@@ -75,12 +85,19 @@ class Login : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val req = LoginRequest(et_nip.text.toString(), et_password.text.toString(), IMEI)
+                var token = ""
+                if(sharedUsers.idLogin.isNullOrEmpty()) {
+                    token = IMEI
+                } else {
+                    token = sharedUsers.idLogin.toString()
+                }
+                Toast.makeText(this, token, Toast.LENGTH_SHORT).show()
+                val req = LoginRequest(et_nip.text.toString(), et_password.text.toString(), token)
                 authViewModel.login(req)
                 authViewModel.listenToken().observe(this@Login, Observer {
                     if (!it.isNullOrEmpty()) {
                         jwt = JWT(it)
-                            val id_pegawai = jwt.getClaim("id_pegawai").asString()
+                        val id_pegawai = jwt.getClaim("id_pegawai").asString()
                         val nip = jwt.getClaim("nidn").asString()
                         val nama = jwt.getClaim("nama").asString()
                         val kelamin = jwt.getClaim("kelamin").asString()
@@ -113,7 +130,7 @@ class Login : AppCompatActivity() {
                     if (it.isNotEmpty()) {
                         loading.dismiss()
                         Toast.makeText(this@Login, it, Toast.LENGTH_SHORT).show()
-                        Handler().postDelayed({
+                        Handler(Looper.getMainLooper()).postDelayed({
                             authViewModel.clearError()
                         }, 2000)
                     }
@@ -151,6 +168,9 @@ class Login : AppCompatActivity() {
             it.file_verifikasi = file_verifikasi
             it.id_pangkat = id_pangkat
             it.pangkat = pangkat
+            if(it.idLogin.isNullOrEmpty()) {
+                it.idLogin = IMEI
+            }
         }
 
         loading.dismiss()
