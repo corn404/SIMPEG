@@ -2,6 +2,7 @@ package com.umgo.simpeg_umgo.data.service
 
 import com.umgo.simpeg_umgo.data.model.upload.CheckResponse
 import com.umgo.simpeg_umgo.data.model.absen.AbsenResponse
+import com.umgo.simpeg_umgo.data.model.absen.RekResponse
 import com.umgo.simpeg_umgo.data.model.absen.RekapResponse
 import com.umgo.simpeg_umgo.data.model.login.LoginRequest
 import com.umgo.simpeg_umgo.data.model.login.LoginResponse
@@ -54,11 +55,19 @@ interface API {
     @GET("upload/check-upload")
     fun checkUploadBerkas(@Query("pegawai") pegawai: Int, @Query("pangkat") pangkat: Int): Call<BerkasResponse>
 
+
+
     @Multipart
     @POST("upload")
     fun uploadBerkas(
         @PartMap map: HashMap<String, RequestBody>,
         @Part file: MultipartBody.Part): Call<AbsenResponse>
+
+    @GET("absensi/pegawai")
+    fun getRekapAbsen(
+        @Query("start") start: String,
+        @Query("end") end: String,
+        @Query("pegawai") pegawai: Long): Call<RekResponse>
 
     companion object {
         val BASE_URL = "http://36.95.134.246:5001/api/v1/"

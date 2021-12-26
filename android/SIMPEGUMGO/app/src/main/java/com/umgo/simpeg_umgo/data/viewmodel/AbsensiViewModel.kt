@@ -3,10 +3,7 @@ package com.umgo.simpeg_umgo.data.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.umgo.simpeg_umgo.data.model.absen.AbsenResponse
-import com.umgo.simpeg_umgo.data.model.absen.Rekap
-import com.umgo.simpeg_umgo.data.model.absen.RekapResponse
-import com.umgo.simpeg_umgo.data.model.absen.ScanRequest
+import com.umgo.simpeg_umgo.data.model.absen.*
 import com.umgo.simpeg_umgo.data.service.API
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -17,11 +14,13 @@ class AbsensiViewModel: ViewModel() {
     private var rekap = MutableLiveData<List<Rekap>>()
     private var isLoading = MutableLiveData<Boolean>()
     private var messages = MutableLiveData<String>()
+    private var rekapAbsen = MutableLiveData<RekResponse?>()
 
     init {
         rekap.postValue(mutableListOf())
         isLoading.postValue(false)
         messages.postValue("")
+        rekapAbsen.postValue(null)
     }
 
 
@@ -95,6 +94,26 @@ class AbsensiViewModel: ViewModel() {
         }
     }
 
+    fun getRekapAbsen(start: String, end: String, pegawai:Long) {
+        isLoading.postValue(true)
+        viewModelScope.launch {
+            API().getRekapAbsen(start, end, pegawai).enqueue(object : Callback<RekResponse> {
+                override fun onResponse(call: Call<RekResponse>, response: Response<RekResponse>) {
+                    if(response.isSuccessful) {
+                        rekapAbsen.postValue(response.body())
+                        isLoading.postValue(false)
+                    }
+                }
+
+                override fun onFailure(call: Call<RekResponse>, t: Throwable) {
+                    rekapAbsen.postValue(null)
+                    isLoading.postValue(false)
+                }
+
+            })
+        }
+    }
+
     fun loadingOn() {
         isLoading.postValue(true)
     }
@@ -111,4 +130,5 @@ class AbsensiViewModel: ViewModel() {
     fun listenRekap() = rekap
     fun listenLoading() = isLoading
     fun listenMessage() = messages
+    fun listenRekapAbsen() = rekapAbsen
 }

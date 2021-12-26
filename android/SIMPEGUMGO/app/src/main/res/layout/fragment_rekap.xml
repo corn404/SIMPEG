@@ -1,14 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.Rekap.Rekap">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_bulan"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/bulan_items"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
+        android:paddingTop="16dp"
+        android:minHeight="?attr/actionBarSize">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_tanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_baseline_calendar_month_24"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_tanggal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tanggal Rekap"
+                android:fontFamily="@font/poppins"
+                android:inputType="textCapWords"
+                android:padding="10dp"
+                android:enabled="false"
+                android:textColor="@color/text_color2"
+                tools:ignore="HardcodedText,SmallSp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="20dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="HADIR"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_hadir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/text_color2"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout8"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout6"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="CUTI"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_cuti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="0"
+                android:textColor="@color/text_color2"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="ABSEN"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_absen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="0"
+                android:textColor="@color/text_color2"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

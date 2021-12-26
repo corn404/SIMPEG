@@ -5,7 +5,6 @@ const WebResponse = require("../utils/WebResponse");
 
 const AddCuti = async (req, res, next) => {
   const { id_pegawai, mulai_cuti, akhir_cuti } = req.body;
-  console.log(akhir_cuti);
   try {
     const checkTanggal = await db(tableName.cuti)
       .select("*")
@@ -40,7 +39,22 @@ const AddCuti = async (req, res, next) => {
       }
     }
 
+    var dataArr = [];
+    let loop = new Date(mulai_cuti);
+    let end = new Date(akhir_cuti);
+    while (loop <= end) {
+      dataArr.push({
+        id_pegawai: id_pegawai.value,
+        status: 0,
+        tgl_absen: moment(loop).format("yyyy-MM-DD"),
+      });
+      let newDate = loop.setDate(loop.getDate() + 1);
+      loop = new Date(newDate);
+    }
+
     await db.transaction(async (trx) => {
+      await db(tableName.absensi).insert(dataArr).transacting(trx);
+
       await db(tableName.cuti)
         .insert({
           id_pegawai: id_pegawai.value,
